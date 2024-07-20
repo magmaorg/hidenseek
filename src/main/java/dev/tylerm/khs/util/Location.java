@@ -19,22 +19,31 @@ public class Location {
     private final double x;
     private final double y;
     private final double z;
+    private final float yaw;
+    private final float pitch;
 
     public static Location getDefault() {
-        return new Location("", 0.0, 0.0, 0.0);
+        return new Location("", 0.0, 0.0, 0.0, 0.0f, 0.0f);
     }
 
     public static Location from(Player player) {
         org.bukkit.Location location = player.getLocation();
         return new Location(
-                player.getWorld().getName(), location.getX(), location.getY(), location.getZ());
+                player.getWorld().getName(),
+                location.getX(),
+                location.getY(),
+                location.getZ(),
+                location.getYaw(),
+                location.getPitch());
     }
 
-    public Location(@NotNull String world, double x, double y, double z) {
+    public Location(@NotNull String world, double x, double y, double z, float yaw, float pitch) {
         this.world = world;
         this.x = x;
         this.y = y;
         this.z = z;
+        this.yaw = yaw;
+        this.pitch = pitch;
     }
 
     public Location(@NotNull String world, @NotNull org.bukkit.Location location) {
@@ -42,6 +51,8 @@ public class Location {
         this.x = location.getX();
         this.y = location.getY();
         this.z = location.getZ();
+        this.yaw = location.getYaw();
+        this.pitch = location.getPitch();
     }
 
     public World load(WorldType type, World.Environment environment) {
@@ -69,7 +80,7 @@ public class Location {
     }
 
     private org.bukkit.Location toBukkit() {
-        return new org.bukkit.Location(Bukkit.getWorld(world), x, y, z);
+        return new org.bukkit.Location(Bukkit.getWorld(world), x, y, z, yaw, pitch);
     }
 
     public void teleport(Player player) {
@@ -83,7 +94,7 @@ public class Location {
     }
 
     public Location changeWorld(String world) {
-        return new Location(world, x, y, z);
+        return new Location(world, x, y, z, yaw, pitch);
     }
 
     public String getWorld() {

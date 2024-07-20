@@ -49,7 +49,7 @@ public class Create implements ICommand {
                 return;
         }
 
-        Location temp = new Location(args[0], 0, 0, 0);
+        Location temp = new Location(args[0], 0, 0, 0, 0f, 0f);
 
         if (temp.load(type, environment) == null) {
             sender.sendMessage(Config.errorPrefix + Localization.message("WORLD_ADDED_FAILED"));
