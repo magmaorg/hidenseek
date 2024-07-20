@@ -21,17 +21,19 @@ public class List implements ICommand {
             return;
         }
         Map map = Maps.getMap(args[0]);
-        if(map == null) {
+        if (map == null) {
             sender.sendMessage(Config.errorPrefix + Localization.message("INVALID_MAP"));
             return;
         }
         java.util.List<Material> blocks = map.getBlockHunt();
-        if(blocks.isEmpty()) {
+        if (blocks.isEmpty()) {
             sender.sendMessage(Config.errorPrefix + Localization.message("NO_BLOCKS"));
             return;
         }
-        StringBuilder response = new StringBuilder(Config.messagePrefix + Localization.message("BLOCKHUNT_LIST_BLOCKS"));
-        for(int i = 0; i < blocks.size(); i++) {
+        StringBuilder response =
+                new StringBuilder(
+                        Config.messagePrefix + Localization.message("BLOCKHUNT_LIST_BLOCKS"));
+        for (int i = 0; i < blocks.size(); i++) {
             response.append(String.format("\n%s. %s", i, blocks.get(i).toString()));
         }
         sender.sendMessage(response.toString());
@@ -50,7 +52,7 @@ public class List implements ICommand {
     }
 
     public java.util.List<String> autoComplete(@NotNull String parameter, @NotNull String typed) {
-        if(parameter.equals("map")) {
+        if (parameter.equals("map")) {
             return Maps.getAllMaps().stream().map(Map::getName).collect(Collectors.toList());
         }
         return null;

@@ -5,6 +5,7 @@ import dev.tylerm.khs.configuration.Config;
 import dev.tylerm.khs.configuration.Localization;
 import dev.tylerm.khs.configuration.Map;
 import dev.tylerm.khs.configuration.Maps;
+
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
@@ -16,25 +17,34 @@ public class GoTo implements ICommand {
 
     public void execute(Player sender, String[] args) {
         Map map = Maps.getMap(args[0]);
-        if(map == null) {
+        if (map == null) {
             sender.sendMessage(Config.errorPrefix + Localization.message("INVALID_MAP"));
             return;
         }
         if (map.isNotSetup()) {
-            sender.sendMessage(Config.errorPrefix + Localization.message("MAP_NOT_SETUP").addAmount(map.getName()));
+            sender.sendMessage(
+                    Config.errorPrefix
+                            + Localization.message("MAP_NOT_SETUP").addAmount(map.getName()));
             return;
         }
         switch (args[1].toLowerCase()) {
             case "spawn":
-                map.getSpawn().teleport(sender); break;
+                map.getSpawn().teleport(sender);
+                break;
             case "lobby":
-                map.getLobby().teleport(sender); break;
+                map.getLobby().teleport(sender);
+                break;
             case "seekerlobby":
-                map.getSeekerLobby().teleport(sender); break;
+                map.getSeekerLobby().teleport(sender);
+                break;
             case "exit":
-                Config.exitPosition.teleport(sender); break;
+                Config.exitPosition.teleport(sender);
+                break;
             default:
-                sender.sendMessage(Config.errorPrefix + Localization.message("COMMAND_INVALID_ARG").addAmount(args[1].toLowerCase()));
+                sender.sendMessage(
+                        Config.errorPrefix
+                                + Localization.message("COMMAND_INVALID_ARG")
+                                        .addAmount(args[1].toLowerCase()));
         }
     }
 
@@ -51,12 +61,11 @@ public class GoTo implements ICommand {
     }
 
     public List<String> autoComplete(@NotNull String parameter, @NotNull String typed) {
-        if(parameter.equals("map")) {
+        if (parameter.equals("map")) {
             return Maps.getAllMaps().stream().map(Map::getName).collect(Collectors.toList());
-        } else if(parameter.equals("spawn")) {
-            return Arrays.asList("spawn","lobby","seekerlobby","exit");
+        } else if (parameter.equals("spawn")) {
+            return Arrays.asList("spawn", "lobby", "seekerlobby", "exit");
         }
         return null;
     }
-
 }

@@ -1,17 +1,18 @@
 package dev.tylerm.khs.configuration;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import com.cryptomorin.xseries.XMaterial;
 
 import dev.tylerm.khs.Main;
 import dev.tylerm.khs.util.Location;
+
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
-
-import com.cryptomorin.xseries.XMaterial;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class Maps {
 
@@ -25,9 +26,12 @@ public class Maps {
     @Nullable
     public static Map getRandomMap() {
         Optional<Map> map;
-        if(MAPS.values().size() > 0) {
-            Collection<Map> setupMaps = MAPS.values().stream().filter(m -> !m.isNotSetup()).collect(Collectors.toList());
-            if(setupMaps.size() < 1) {
+        if (MAPS.values().size() > 0) {
+            Collection<Map> setupMaps =
+                    MAPS.values().stream()
+                            .filter(m -> !m.isNotSetup())
+                            .collect(Collectors.toList());
+            if (setupMaps.size() < 1) {
                 return null;
             }
             map = setupMaps.stream().skip(new Random().nextInt(setupMaps.size())).findFirst();
@@ -58,20 +62,19 @@ public class Maps {
         ConfigManager manager = ConfigManager.create("maps.yml");
 
         ConfigurationSection maps = manager.getConfigurationSection("maps");
-        if(maps == null) return;
+        if (maps == null) return;
         Set<String> keys = maps.getKeys(false);
-        if(keys == null) return;
+        if (keys == null) return;
 
         MAPS.clear();
-        for(String key : keys) {
+        for (String key : keys) {
             MAPS.put(key, parseMap(maps, key));
         }
-
     }
 
     private static Map parseMap(ConfigurationSection maps, String name) {
         ConfigurationSection data = maps.getConfigurationSection(name);
-        if(data == null) return null;
+        if (data == null) return null;
         Map map = new Map(name);
         Main.getInstance().getLogger().info("Loading map: " + name + "...");
         map.setSpawn(getSpawn(data, "game"));
@@ -84,28 +87,25 @@ public class Maps {
                 data.getInt("worldborder.pos.z"),
                 data.getInt("worldborder.size"),
                 data.getInt("worldborder.delay"),
-                data.getInt("worldborder.change")
-        );
+                data.getInt("worldborder.change"));
         List<String> blockhunt = data.getStringList("blockhunt.blocks");
-        if(blockhunt == null) blockhunt = new ArrayList<>();
+        if (blockhunt == null) blockhunt = new ArrayList<>();
         map.setBlockhunt(
-            data.getBoolean("blockhunt.enabled"),
-            blockhunt
-            .stream()
-            .map(XMaterial::matchXMaterial)
-            .filter(Optional::isPresent)
-            .map(e -> e.get().parseMaterial())
-            .filter(Objects::nonNull)
-            .collect(Collectors.toList())
-        );
+                data.getBoolean("blockhunt.enabled"),
+                blockhunt.stream()
+                        .map(XMaterial::matchXMaterial)
+                        .filter(Optional::isPresent)
+                        .map(e -> e.get().parseMaterial())
+                        .filter(Objects::nonNull)
+                        .collect(Collectors.toList()));
         return map;
     }
 
     private static Location getSpawn(ConfigurationSection data, String spawn) {
-        String world = data.getString("spawns."+spawn+".world");
-        double x = data.getDouble("spawns."+spawn+".x");
-        double y = data.getDouble("spawns."+spawn+".y");
-        double z = data.getDouble("spawns."+spawn+".z");
+        String world = data.getString("spawns." + spawn + ".world");
+        double x = data.getDouble("spawns." + spawn + ".x");
+        double y = data.getDouble("spawns." + spawn + ".y");
+        double z = data.getDouble("spawns." + spawn + ".z");
         return new Location(world, x, y, z);
     }
 
@@ -114,7 +114,7 @@ public class Maps {
         ConfigManager manager = ConfigManager.create("maps.yml");
         ConfigurationSection maps = new YamlConfiguration();
 
-        for(Map map : MAPS.values()) {
+        for (Map map : MAPS.values()) {
             ConfigurationSection data = new YamlConfiguration();
             saveSpawn(data, map.getSpawn(), "game", map);
             saveSpawn(data, map.getLobby(), "lobby", map);
@@ -129,13 +129,14 @@ public class Maps {
             data.set("worldborder.pos.delay", map.getWorldBorderData().getY());
             data.set("worldborder.pos.change", map.getWorldBorderData().getZ());
             data.set("blockhunt.enabled", map.isBlockHuntEnabled());
-            data.set("blockhunt.blocks", map.getBlockHunt().stream().map(Material::name).collect(Collectors.toList()));
+            data.set(
+                    "blockhunt.blocks",
+                    map.getBlockHunt().stream().map(Material::name).collect(Collectors.toList()));
             maps.set(map.getName(), data);
         }
 
         manager.set("maps", maps);
         manager.overwriteConfig();
-
     }
 
     private static void saveSpawn(ConfigurationSection data, Location spawn, String name, Map map) {
@@ -148,11 +149,14 @@ public class Maps {
 
     private static String getWorldName(String name, Map map) {
         switch (name) {
-            case "game": return map.getSpawnName();
-            case "lobby": return map.getLobbyName();
-            case "seeker": return map.getSeekerLobbyName();
-            default: return null;
+            case "game":
+                return map.getSpawnName();
+            case "lobby":
+                return map.getLobbyName();
+            case "seeker":
+                return map.getSeekerLobbyName();
+            default:
+                return null;
         }
     }
-
 }

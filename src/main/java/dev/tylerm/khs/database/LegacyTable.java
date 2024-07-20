@@ -38,7 +38,8 @@ public class LegacyTable {
         String sql = "SELECT * FROM player_info LIMIT 1;";
 
         boolean check;
-        try(Connection connection = database.connect(); Statement statement = connection.createStatement()) {
+        try (Connection connection = database.connect();
+                Statement statement = connection.createStatement()) {
             ResultSet resultSet = statement.executeQuery(sql);
             check = resultSet.next();
         } catch (SQLException e) {
@@ -49,47 +50,49 @@ public class LegacyTable {
         this.database = database;
     }
 
-    public boolean exists(){
+    public boolean exists() {
         return exists;
     }
 
-    public boolean copyData(){
+    public boolean copyData() {
         String sql = "SELECT * FROM player_info;";
         List<LegacyPlayerInfo> legacyPlayerInfoList = new ArrayList<>();
-        try(Connection connection = database.connect(); Statement statement = connection.createStatement()) {
+        try (Connection connection = database.connect();
+                Statement statement = connection.createStatement()) {
             ResultSet resultSet = statement.executeQuery(sql);
-            while(resultSet.next()){
-                legacyPlayerInfoList.add(new LegacyPlayerInfo(
-                    resultSet.getBytes("uuid"),
-                    resultSet.getInt("hider_wins"),
-                    resultSet.getInt("seeker_wins"),
-                    resultSet.getInt("games_played")
-                ));
+            while (resultSet.next()) {
+                legacyPlayerInfoList.add(
+                        new LegacyPlayerInfo(
+                                resultSet.getBytes("uuid"),
+                                resultSet.getInt("hider_wins"),
+                                resultSet.getInt("seeker_wins"),
+                                resultSet.getInt("games_played")));
             }
             resultSet.close();
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
         }
-        for(LegacyPlayerInfo legacyInfo : legacyPlayerInfoList){
-            database.getGameData().updateInfo(
-                legacyInfo.getUniqueId(),
-                legacyInfo.getHiderWins(),
-                legacyInfo.getSeekerWins(),
-                legacyInfo.getGamesPlayer() - legacyInfo.getSeekerWins(),
-                legacyInfo.getSeekerWins(),
-                0,
-                0,
-                0,
-                0
-            );
+        for (LegacyPlayerInfo legacyInfo : legacyPlayerInfoList) {
+            database.getGameData()
+                    .updateInfo(
+                            legacyInfo.getUniqueId(),
+                            legacyInfo.getHiderWins(),
+                            legacyInfo.getSeekerWins(),
+                            legacyInfo.getGamesPlayer() - legacyInfo.getSeekerWins(),
+                            legacyInfo.getSeekerWins(),
+                            0,
+                            0,
+                            0,
+                            0);
         }
         return true;
     }
 
-    public boolean drop(){
+    public boolean drop() {
         String sql = "DROP table player_info";
-        try(Connection connection = database.connect(); Statement statement = connection.createStatement()) {
+        try (Connection connection = database.connect();
+                Statement statement = connection.createStatement()) {
             statement.execute(sql);
             return true;
         } catch (SQLException e) {
@@ -97,5 +100,4 @@ public class LegacyTable {
             return false;
         }
     }
-
 }

@@ -20,6 +20,7 @@
 package dev.tylerm.khs.database;
 
 import dev.tylerm.khs.Main;
+
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.jetbrains.annotations.NotNull;
@@ -34,13 +35,15 @@ public class NameDataTable {
 
     protected NameDataTable(Database database) {
 
-        String sql = "CREATE TABLE IF NOT EXISTS hs_names (\n"
-                + "	uuid BINARY(16) NOT NULL,\n"
-                + "	name VARCHAR(48) NOT NULL,\n"
-                + "	PRIMARY KEY (uuid,name)\n"
-                + ");";
+        String sql =
+                "CREATE TABLE IF NOT EXISTS hs_names (\n"
+                        + "	uuid BINARY(16) NOT NULL,\n"
+                        + "	name VARCHAR(48) NOT NULL,\n"
+                        + "	PRIMARY KEY (uuid,name)\n"
+                        + ");";
 
-        try(Connection connection = database.connect(); Statement statement = connection.createStatement()) {
+        try (Connection connection = database.connect();
+                Statement statement = connection.createStatement()) {
             statement.executeUpdate(sql);
         } catch (SQLException e) {
             Main.getInstance().getLogger().severe("SQL Error: " + e.getMessage());
@@ -53,9 +56,10 @@ public class NameDataTable {
     @Nullable
     public String getName(@NotNull UUID uuid) {
         String sql = "SELECT * FROM hs_names WHERE uuid = ?;";
-        try(Connection connection = database.connect(); PreparedStatement statement = connection.prepareStatement(sql)) {
+        try (Connection connection = database.connect();
+                PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setBytes(1, database.encodeUUID(uuid));
-            ResultSet rs  = statement.executeQuery();
+            ResultSet rs = statement.executeQuery();
             if (rs.next()) {
                 return rs.getString("name");
             }
@@ -65,7 +69,7 @@ public class NameDataTable {
             e.printStackTrace();
         }
         OfflinePlayer retry = Bukkit.getOfflinePlayer(uuid);
-        if(retry != null && retry.getName() != null){
+        if (retry != null && retry.getName() != null) {
             this.update(uuid, retry.getName());
             return retry.getName();
         }
@@ -76,9 +80,10 @@ public class NameDataTable {
     @Nullable
     public UUID getUUID(@NotNull String name) {
         String sql = "SELECT * FROM hs_names WHERE name = ?;";
-        try(Connection connection = database.connect(); PreparedStatement statement = connection.prepareStatement(sql)) {
+        try (Connection connection = database.connect();
+                PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, name);
-            ResultSet rs  = statement.executeQuery();
+            ResultSet rs = statement.executeQuery();
             if (rs.next()) {
                 return database.decodeUUID(rs.getBytes("uuid"));
             }
@@ -88,16 +93,17 @@ public class NameDataTable {
             e.printStackTrace();
         }
         OfflinePlayer retry = Bukkit.getOfflinePlayer(name);
-        if(retry != null){
+        if (retry != null) {
             this.update(retry.getUniqueId(), name);
             return retry.getUniqueId();
         }
         return null;
     }
 
-    public boolean update(@NotNull UUID uuid, @NotNull String name){
+    public boolean update(@NotNull UUID uuid, @NotNull String name) {
         String sql = "REPLACE INTO hs_names (uuid, name) VALUES (?,?)";
-        try(Connection connection = database.connect(); PreparedStatement statement = connection.prepareStatement(sql)) {
+        try (Connection connection = database.connect();
+                PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setBytes(1, database.encodeUUID(uuid));
             statement.setString(2, name);
             statement.execute();
@@ -109,5 +115,4 @@ public class NameDataTable {
             return false;
         }
     }
-
 }

@@ -1,14 +1,15 @@
 package dev.tylerm.khs.command;
 
+import static dev.tylerm.khs.configuration.Config.errorPrefix;
+import static dev.tylerm.khs.configuration.Localization.message;
+
 import dev.tylerm.khs.command.util.ICommand;
+
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 import java.util.function.Consumer;
-
-import static dev.tylerm.khs.configuration.Config.errorPrefix;
-import static dev.tylerm.khs.configuration.Localization.message;
 
 public class Confirm implements ICommand {
 
@@ -17,12 +18,12 @@ public class Confirm implements ICommand {
     public void execute(Player sender, String[] args) {
         Confirmation confirmation = confirmations.get(sender.getUniqueId());
         confirmations.remove(sender.getUniqueId());
-        if(confirmation == null) {
+        if (confirmation == null) {
             sender.sendMessage(errorPrefix + message("NO_CONFIRMATION"));
         } else {
             long now = System.currentTimeMillis();
             float secs = (now - confirmation.start) / 1000F;
-            if(secs > 10) {
+            if (secs > 10) {
                 sender.sendMessage(errorPrefix + message("CONFIRMATION_TIMED_OUT"));
                 return;
             }
@@ -56,7 +57,5 @@ public class Confirm implements ICommand {
             this.data = data;
             this.start = System.currentTimeMillis();
         }
-
     }
-
 }

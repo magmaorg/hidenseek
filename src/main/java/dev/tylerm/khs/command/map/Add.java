@@ -7,6 +7,7 @@ import dev.tylerm.khs.configuration.Localization;
 import dev.tylerm.khs.configuration.Map;
 import dev.tylerm.khs.configuration.Maps;
 import dev.tylerm.khs.game.util.Status;
+
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
@@ -21,13 +22,14 @@ public class Add implements ICommand {
             return;
         }
         Map map = Maps.getMap(args[0]);
-        if(map != null) {
+        if (map != null) {
             sender.sendMessage(Config.errorPrefix + Localization.message("MAP_ALREADY_EXISTS"));
-        } else if(!args[0].matches("[a-zA-Z0-9]*") || args[0].length() < 1) {
+        } else if (!args[0].matches("[a-zA-Z0-9]*") || args[0].length() < 1) {
             sender.sendMessage(Config.errorPrefix + Localization.message("INVALID_MAP_NAME"));
         } else {
             Maps.setMap(args[0], new Map(args[0]));
-            sender.sendMessage(Config.messagePrefix + Localization.message("MAP_CREATED").addAmount(args[0]));
+            sender.sendMessage(
+                    Config.messagePrefix + Localization.message("MAP_CREATED").addAmount(args[0]));
         }
     }
 
@@ -44,10 +46,9 @@ public class Add implements ICommand {
     }
 
     public List<String> autoComplete(@NotNull String parameter, @NotNull String typed) {
-        if(parameter.equals("name")) {
+        if (parameter.equals("name")) {
             return Collections.singletonList("name");
         }
         return null;
     }
-
 }

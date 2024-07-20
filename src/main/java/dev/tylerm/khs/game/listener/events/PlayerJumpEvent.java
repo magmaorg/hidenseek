@@ -52,5 +52,4 @@ public class PlayerJumpEvent extends PlayerEvent implements Cancellable {
     public static HandlerList getHandlerList() {
         return handlers;
     }
-
 }

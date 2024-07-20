@@ -2,6 +2,7 @@ package dev.tylerm.khs.game.listener;
 
 import dev.tylerm.khs.Main;
 import dev.tylerm.khs.game.Board;
+
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -16,7 +17,7 @@ public class WorldInteractHandler implements Listener {
     public void onBlockBreak(BlockBreakEvent event) {
         Player player = event.getPlayer();
         Board board = Main.getInstance().getBoard();
-        if(board.contains(player)) {
+        if (board.contains(player)) {
             event.setCancelled(true);
         }
     }
@@ -28,7 +29,7 @@ public class WorldInteractHandler implements Listener {
         }
         Player player = (Player) event.getRemover();
         Board board = Main.getInstance().getBoard();
-        if(board.contains(player)) {
+        if (board.contains(player)) {
             event.setCancelled(true);
         }
     }
@@ -40,9 +41,8 @@ public class WorldInteractHandler implements Listener {
         }
         Player player = (Player) event.getEntity();
         Board board = Main.getInstance().getBoard();
-        if(board.contains(player)) {
+        if (board.contains(player)) {
             event.setCancelled(true);
         }
     }
-
 }

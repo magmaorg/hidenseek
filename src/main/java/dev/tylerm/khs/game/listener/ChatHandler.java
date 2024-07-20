@@ -1,6 +1,7 @@
 package dev.tylerm.khs.game.listener;
 
 import dev.tylerm.khs.Main;
+
 import org.bukkit.ChatColor;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -13,8 +14,17 @@ public class ChatHandler implements Listener {
     public void onChat(AsyncPlayerChatEvent event) {
         if (Main.getInstance().getBoard().isSpectator(event.getPlayer())) {
             event.setCancelled(true);
-            Main.getInstance().getBoard().getSpectators().forEach(spectator -> spectator.sendMessage(ChatColor.GRAY + "[SPECTATOR] " + event.getPlayer().getName() + ": " + event.getMessage()));
+            Main.getInstance()
+                    .getBoard()
+                    .getSpectators()
+                    .forEach(
+                            spectator ->
+                                    spectator.sendMessage(
+                                            ChatColor.GRAY
+                                                    + "[SPECTATOR] "
+                                                    + event.getPlayer().getName()
+                                                    + ": "
+                                                    + event.getMessage()));
         }
     }
-
 }

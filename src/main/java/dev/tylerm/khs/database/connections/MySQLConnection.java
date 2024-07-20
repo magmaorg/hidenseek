@@ -21,6 +21,7 @@ package dev.tylerm.khs.database.connections;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
+
 import dev.tylerm.khs.Main;
 import dev.tylerm.khs.configuration.Config;
 
@@ -31,7 +32,7 @@ public class MySQLConnection implements DatabaseConnection {
 
     private final HikariDataSource ds;
 
-    public MySQLConnection(){
+    public MySQLConnection() {
 
         HikariConfig config = new HikariConfig();
 
@@ -41,9 +42,14 @@ public class MySQLConnection implements DatabaseConnection {
         Main.getInstance().getLogger().info("Database pass: xxxxxxxxxxx");
         Main.getInstance().getLogger().info("Database name: " + Config.databaseName);
 
-
         config.setDriverClassName(org.mariadb.jdbc.Driver.class.getName());
-        config.setJdbcUrl("jdbc:mariadb://"+ Config.databaseHost+":"+ Config.databasePort+"/"+ Config.databaseName.trim());
+        config.setJdbcUrl(
+                "jdbc:mariadb://"
+                        + Config.databaseHost
+                        + ":"
+                        + Config.databasePort
+                        + "/"
+                        + Config.databaseName.trim());
         config.addDataSourceProperty("cachePrepStmts", "true");
         config.addDataSourceProperty("prepStmtCacheSize", "250");
         config.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
@@ -54,12 +60,10 @@ public class MySQLConnection implements DatabaseConnection {
         config.setMaximumPoolSize(20);
 
         ds = new HikariDataSource(config);
-
     }
 
     @Override
     public Connection connect() throws SQLException {
         return ds.getConnection();
     }
-
 }

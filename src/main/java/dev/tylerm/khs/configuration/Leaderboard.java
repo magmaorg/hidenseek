@@ -5,8 +5,7 @@ import java.util.List;
 
 public class Leaderboard {
 
-    public static String
-            LOBBY_TITLE,
+    public static String LOBBY_TITLE,
             GAME_TITLE,
             COUNTDOWN_WAITING,
             COUNTDOWN_COUNTING,
@@ -18,10 +17,7 @@ public class Leaderboard {
             GLOW_INACTIVE,
             BORDER_COUNTING,
             BORDER_DECREASING;
-
-    public static List<String>
-            LOBBY_CONTENTS,
-            GAME_CONTENTS;
+    public static List<String> LOBBY_CONTENTS, GAME_CONTENTS;
 
     public static void loadLeaderboard() {
 
@@ -45,7 +41,5 @@ public class Leaderboard {
         BORDER_DECREASING = leaderboard.getString("border.decreasing");
 
         leaderboard.saveConfig();
-
     }
-
 }

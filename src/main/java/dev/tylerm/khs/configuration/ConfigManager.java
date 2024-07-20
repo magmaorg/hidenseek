@@ -1,6 +1,7 @@
 package dev.tylerm.khs.configuration;
 
 import dev.tylerm.khs.Main;
+
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -14,7 +15,7 @@ import java.util.Map;
 public class ConfigManager {
 
     private final File file;
-    private YamlConfiguration config,defaultConfig;
+    private YamlConfiguration config, defaultConfig;
     private String defaultFilename;
 
     public static ConfigManager create(String filename) {
@@ -28,20 +29,26 @@ public class ConfigManager {
     private ConfigManager(String filename, String defaultFilename) {
 
         File dataFolder = Main.getInstance().getDataFolder();
-        File oldDataFolder = new File(Main.getInstance().getDataFolder().getParent() + File.separator + "HideAndSeek");
+        File oldDataFolder =
+                new File(
+                        Main.getInstance().getDataFolder().getParent()
+                                + File.separator
+                                + "HideAndSeek");
 
         this.defaultFilename = defaultFilename;
         this.file = new File(dataFolder, filename);
 
-        if(oldDataFolder.exists()){
-            if(!dataFolder.exists()){
-                if(!oldDataFolder.renameTo(dataFolder)){
-                    throw new RuntimeException("Could not rename folder: " + oldDataFolder.getPath());
+        if (oldDataFolder.exists()) {
+            if (!dataFolder.exists()) {
+                if (!oldDataFolder.renameTo(dataFolder)) {
+                    throw new RuntimeException(
+                            "Could not rename folder: " + oldDataFolder.getPath());
                 }
             } else {
-                throw new RuntimeException("Plugin folders for HideAndSeek & KenshinsHideAndSeek both exists. There can only be one!");
+                throw new RuntimeException(
+                        "Plugin folders for HideAndSeek & KenshinsHideAndSeek both exists. There"
+                                + " can only be one!");
             }
-
         }
 
         if (!dataFolder.exists()) {
@@ -51,14 +58,15 @@ public class ConfigManager {
         }
 
         if (!file.exists()) {
-            try{
+            try {
                 InputStream input = Main.getInstance().getResource(defaultFilename);
                 if (input == null) {
-                    throw new RuntimeException("Could not create input stream for "+defaultFilename);
+                    throw new RuntimeException(
+                            "Could not create input stream for " + defaultFilename);
                 }
                 java.nio.file.Files.copy(input, file.toPath());
                 input.close();
-            } catch(IOException e) {
+            } catch (IOException e) {
                 e.printStackTrace();
             }
         }
@@ -67,35 +75,36 @@ public class ConfigManager {
         try {
             fileInputStream = new FileInputStream(file);
         } catch (FileNotFoundException e) {
-            throw new RuntimeException("Could not create input stream for "+file.getPath());
+            throw new RuntimeException("Could not create input stream for " + file.getPath());
         }
         InputStreamReader reader = new InputStreamReader(fileInputStream, StandardCharsets.UTF_8);
         this.config = new YamlConfiguration();
         try {
             this.config.load(reader);
-        } catch(InvalidConfigurationException e) {
+        } catch (InvalidConfigurationException e) {
             Main.getInstance().getLogger().severe(e.getMessage());
-            throw new RuntimeException("Invalid configuration in config file: "+file.getPath());
-        } catch(IOException e) {
-            throw new RuntimeException("Could not access file: "+file.getPath());
+            throw new RuntimeException("Invalid configuration in config file: " + file.getPath());
+        } catch (IOException e) {
+            throw new RuntimeException("Could not access file: " + file.getPath());
         }
 
         InputStream input = this.getClass().getClassLoader().getResourceAsStream(defaultFilename);
         if (input == null) {
-            throw new RuntimeException("Could not create input stream for "+defaultFilename);
+            throw new RuntimeException("Could not create input stream for " + defaultFilename);
         }
         InputStreamReader default_reader = new InputStreamReader(input, StandardCharsets.UTF_8);
         this.defaultConfig = new YamlConfiguration();
         try {
             this.defaultConfig.load(default_reader);
-        } catch(InvalidConfigurationException e) {
+        } catch (InvalidConfigurationException e) {
             Main.getInstance().getLogger().severe(e.getMessage());
-            throw new RuntimeException("Invalid configuration in internal config file: "+defaultFilename);
-        } catch(IOException e) {
-            throw new RuntimeException("Could not access internal file: "+defaultFilename);
+            throw new RuntimeException(
+                    "Invalid configuration in internal config file: " + defaultFilename);
+        } catch (IOException e) {
+            throw new RuntimeException("Could not access internal file: " + defaultFilename);
         }
 
-        try{
+        try {
             fileInputStream.close();
             default_reader.close();
         } catch (IOException e) {
@@ -177,12 +186,11 @@ public class ConfigManager {
 
         InputStream input = Main.getInstance().getResource(defaultFilename);
         if (input == null) {
-            throw new RuntimeException("Could not create input stream for "+defaultFilename);
+            throw new RuntimeException("Could not create input stream for " + defaultFilename);
         }
         InputStreamReader reader = new InputStreamReader(input);
         this.config = YamlConfiguration.loadConfiguration(reader);
         this.defaultConfig = YamlConfiguration.loadConfiguration(reader);
-
     }
 
     public boolean getBoolean(String path) {
@@ -224,33 +232,34 @@ public class ConfigManager {
             InputStream is = Main.getInstance().getResource(defaultFilename);
             // if failed error
             if (is == null) {
-                throw new RuntimeException("Could not create input stream for "+defaultFilename);
+                throw new RuntimeException("Could not create input stream for " + defaultFilename);
             }
             // manually read in each character to preserve string data
-            StringBuilder textBuilder = new StringBuilder(new String("".getBytes(), StandardCharsets.UTF_8));
+            StringBuilder textBuilder =
+                    new StringBuilder(new String("".getBytes(), StandardCharsets.UTF_8));
             Reader reader = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8));
             int c;
-            while((c = reader.read()) != -1)
-                textBuilder.append((char) c);
+            while ((c = reader.read()) != -1) textBuilder.append((char) c);
             // store yaml file into a string
             String yaml = new String(textBuilder.toString().getBytes(), StandardCharsets.UTF_8);
             // get config values
             Map<String, Object> data = config.getValues(true);
             // write each stored config value into the yaml string
-            for(Map.Entry<String, Object> entry: data.entrySet()) {
+            for (Map.Entry<String, Object> entry : data.entrySet()) {
                 // if type isn't supported, skip
-                if(!isSupported(entry.getValue())) continue;
+                if (!isSupported(entry.getValue())) continue;
                 // get index of key in yaml string
                 int index = getIndex(yaml, entry.getKey());
                 // if index not found, skip
-                if (index < 10)  continue;
+                if (index < 10) continue;
                 // get start and end of the value
                 int start = yaml.indexOf(' ', index) + 1;
                 int end = yaml.indexOf('\n', index);
                 // if end not found, set it to the end of the file
                 if (end == -1) end = yaml.length();
                 // create new replace sting
-                StringBuilder replace = new StringBuilder(new String("".getBytes(), StandardCharsets.UTF_8));
+                StringBuilder replace =
+                        new StringBuilder(new String("".getBytes(), StandardCharsets.UTF_8));
                 // get value
                 Object value = entry.getValue();
                 // if the value is a list,
@@ -268,11 +277,11 @@ public class ConfigManager {
                         replace.append("[\n");
                         for (int i = 0; i < list.size(); i++) {
                             replace.append(space).append("  ").append(convert(list.get(i)));
-                            if(i != list.size() -1) replace.append(",\n");
+                            if (i != list.size() - 1) replace.append(",\n");
                         }
                         replace.append('\n').append(space).append("]");
                     }
-                // otherwise just put the value directly
+                    // otherwise just put the value directly
                 } else {
                     replace.append(convert(value));
                 }
@@ -283,7 +292,10 @@ public class ConfigManager {
             }
 
             // write yaml string to file
-            Writer fileWriter = new BufferedWriter(new OutputStreamWriter(Files.newOutputStream(file.toPath()), StandardCharsets.UTF_8));
+            Writer fileWriter =
+                    new BufferedWriter(
+                            new OutputStreamWriter(
+                                    Files.newOutputStream(file.toPath()), StandardCharsets.UTF_8));
             fileWriter.write(yaml);
             fileWriter.close();
         } catch (IOException e) {
@@ -294,7 +306,7 @@ public class ConfigManager {
     private int getIndex(String yaml, String key) {
         String[] parts = key.split("\\.");
         int index = 0;
-        for(String part : parts) {
+        for (String part : parts) {
             if (index == 0) {
                 index = yaml.indexOf("\n" + part + ":", index) + 1;
             } else {
@@ -306,26 +318,25 @@ public class ConfigManager {
     }
 
     public boolean isSupported(Object o) {
-        return o instanceof Integer ||
-                o instanceof Double ||
-                o instanceof String ||
-                o instanceof Boolean ||
-                o instanceof List;
+        return o instanceof Integer
+                || o instanceof Double
+                || o instanceof String
+                || o instanceof Boolean
+                || o instanceof List;
     }
 
     public int whitespaceBefore(String yaml, int index) {
         int count = 0;
-        for(int i = index - 1; yaml.charAt(i) == ' '; i--) count++;
+        for (int i = index - 1; yaml.charAt(i) == ' '; i--) count++;
         return count;
     }
 
     private String convert(Object o) {
-        if(o instanceof String) {
+        if (o instanceof String) {
             return "\"" + o + "\"";
         } else if (o instanceof Boolean) {
-            return (boolean)o ? "true" : "false";
+            return (boolean) o ? "true" : "false";
         }
         return o.toString();
     }
-
 }

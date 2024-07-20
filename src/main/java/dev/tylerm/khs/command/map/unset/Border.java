@@ -7,6 +7,7 @@ import dev.tylerm.khs.configuration.Localization;
 import dev.tylerm.khs.configuration.Map;
 import dev.tylerm.khs.configuration.Maps;
 import dev.tylerm.khs.game.util.Status;
+
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
@@ -21,7 +22,7 @@ public class Border implements ICommand {
             return;
         }
         Map map = Maps.getMap(args[0]);
-        if(map == null) {
+        if (map == null) {
             sender.sendMessage(Config.errorPrefix + Localization.message("INVALID_MAP"));
             return;
         }
@@ -30,7 +31,7 @@ public class Border implements ICommand {
             return;
         }
         map.setWorldBorderData(0, 0, 0, 0, 0);
-        Config.addToConfig("worldBorder.enabled",false);
+        Config.addToConfig("worldBorder.enabled", false);
         Config.saveConfig();
         sender.sendMessage(Config.messagePrefix + Localization.message("WORLDBORDER_DISABLE"));
         map.getWorldBorder().resetWorldBorder();
@@ -49,10 +50,9 @@ public class Border implements ICommand {
     }
 
     public List<String> autoComplete(@NotNull String parameter, @NotNull String typed) {
-        if(parameter.equals("map")) {
+        if (parameter.equals("map")) {
             return Maps.getAllMaps().stream().map(Map::getName).collect(Collectors.toList());
         }
         return null;
     }
-
 }

@@ -7,6 +7,7 @@ import dev.tylerm.khs.configuration.Localization;
 import dev.tylerm.khs.configuration.Map;
 import dev.tylerm.khs.configuration.Maps;
 import dev.tylerm.khs.game.util.Status;
+
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
@@ -21,12 +22,15 @@ public class Remove implements ICommand {
             return;
         }
         Map map = Maps.getMap(args[0]);
-        if(map == null) {
+        if (map == null) {
             sender.sendMessage(Config.errorPrefix + Localization.message("INVALID_MAP"));
-        } else if(!Maps.removeMap(args[0])){
-            sender.sendMessage(Config.errorPrefix + Localization.message("MAP_FAIL_DELETE").addAmount(args[0]));
+        } else if (!Maps.removeMap(args[0])) {
+            sender.sendMessage(
+                    Config.errorPrefix
+                            + Localization.message("MAP_FAIL_DELETE").addAmount(args[0]));
         } else {
-            sender.sendMessage(Config.messagePrefix + Localization.message("MAP_DELETED").addAmount(args[0]));
+            sender.sendMessage(
+                    Config.messagePrefix + Localization.message("MAP_DELETED").addAmount(args[0]));
         }
     }
 
@@ -43,10 +47,9 @@ public class Remove implements ICommand {
     }
 
     public List<String> autoComplete(@NotNull String parameter, @NotNull String typed) {
-        if(parameter.equals("map")) {
+        if (parameter.equals("map")) {
             return Maps.getAllMaps().stream().map(Map::getName).collect(Collectors.toList());
         }
         return null;
     }
-
 }

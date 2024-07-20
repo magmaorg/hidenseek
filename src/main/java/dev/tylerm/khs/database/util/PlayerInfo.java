@@ -33,7 +33,16 @@ public class PlayerInfo {
     private final int hiderDeaths;
     private final int seekerDeaths;
 
-    public PlayerInfo(UUID uniqueId, int hiderWins, int seekerWins, int hiderGames, int seekerGames, int hiderKills, int seekerKills, int hiderDeaths, int seekerDeaths) {
+    public PlayerInfo(
+            UUID uniqueId,
+            int hiderWins,
+            int seekerWins,
+            int hiderGames,
+            int seekerGames,
+            int hiderKills,
+            int seekerKills,
+            int hiderDeaths,
+            int seekerDeaths) {
         this.uniqueId = uniqueId;
         this.hiderWins = hiderWins;
         this.seekerWins = seekerWins;
@@ -80,5 +89,4 @@ public class PlayerInfo {
     public int getSeekerDeaths() {
         return seekerDeaths;
     }
-
 }

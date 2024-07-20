@@ -23,5 +23,4 @@ public class Tuple<L, C, R> {
     public R getRight() {
         return right;
     }
-
 }

@@ -7,14 +7,13 @@ import java.util.List;
 
 public interface ICommand {
 
-	void execute(Player sender, String[] args);
+    void execute(Player sender, String[] args);
 
-	String getLabel();
+    String getLabel();
 
-	String getUsage();
+    String getUsage();
 
-	String getDescription();
+    String getDescription();
 
-	List<String> autoComplete(@NotNull String parameter, @NotNull String typed);
-
+    List<String> autoComplete(@NotNull String parameter, @NotNull String typed);
 }

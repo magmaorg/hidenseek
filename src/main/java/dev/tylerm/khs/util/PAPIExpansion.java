@@ -1,11 +1,15 @@
 package dev.tylerm.khs.util;
 
-import me.clip.placeholderapi.expansion.PlaceholderExpansion;
+import static dev.tylerm.khs.configuration.Config.placeholderError;
+import static dev.tylerm.khs.configuration.Config.placeholderNoData;
+
 import dev.tylerm.khs.Main;
 import dev.tylerm.khs.database.Database;
 import dev.tylerm.khs.database.util.PlayerInfo;
 import dev.tylerm.khs.game.Board;
 import dev.tylerm.khs.game.util.Status;
+
+import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 
 import org.bukkit.OfflinePlayer;
 import org.jetbrains.annotations.NotNull;
@@ -14,10 +18,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Optional;
 import java.util.UUID;
 
-import static dev.tylerm.khs.configuration.Config.placeholderError;
-import static dev.tylerm.khs.configuration.Config.placeholderNoData;
-
-public class PAPIExpansion extends PlaceholderExpansion  {
+public class PAPIExpansion extends PlaceholderExpansion {
 
     @Override
     public @NotNull String getIdentifier() {
@@ -60,7 +61,7 @@ public class PAPIExpansion extends PlaceholderExpansion  {
                 return "-";
             }
         }
-        
+
         if (args.length == 1 && args[0].equals("seekers")) {
             if (!board.containsUUID(player.getUniqueId())) {
                 return "-";
@@ -71,25 +72,33 @@ public class PAPIExpansion extends PlaceholderExpansion  {
             }
         }
 
-        if ((args.length == 2 || args.length == 3) && (args[0].equals("stats") || args[0].equals("rank-place"))) {
-            Optional<PlayerInfo> info = this.getPlayerInfo(args.length == 2 ? player.getUniqueId() : database.getNameData().getUUID(args[2]));
+        if ((args.length == 2 || args.length == 3)
+                && (args[0].equals("stats") || args[0].equals("rank-place"))) {
+            Optional<PlayerInfo> info =
+                    this.getPlayerInfo(
+                            args.length == 2
+                                    ? player.getUniqueId()
+                                    : database.getNameData().getUUID(args[2]));
             if (info.isPresent()) {
                 switch (args[0]) {
                     case "stats":
                         return getValue(info.get(), args[1]);
                     case "rank-place":
                         if (getRanking(args[1]) == null) return placeholderError;
-                        Integer count = database.getGameData().getRanking(getRanking(args[1]), player.getUniqueId());
+                        Integer count =
+                                database.getGameData()
+                                        .getRanking(getRanking(args[1]), player.getUniqueId());
                         if (getValue(info.get(), args[1]).equals("0")) return "-";
                         if (count == null) return placeholderNoData;
                         return count.toString();
                 }
-            } else switch (args[0]) {
+            } else
+                switch (args[0]) {
                     case "stats":
                         return placeholderNoData;
                     case "rank-place":
                         return "-";
-            }
+                }
         }
 
         if ((args[0].equals("rank-score") || args[0].equals("rank-name")) && args.length == 3) {
@@ -99,7 +108,9 @@ public class PAPIExpansion extends PlaceholderExpansion  {
             PlayerInfo info = database.getGameData().getInfoRanking(getRanking(args[1]), place);
             if (info == null) return placeholderNoData;
 
-            return args[0].equals("rank-score") ? getValue(info, args[1]) : Main.getInstance().getServer().getOfflinePlayer(info.getUniqueId()).getName();
+            return args[0].equals("rank-score")
+                    ? getValue(info, args[1])
+                    : Main.getInstance().getServer().getOfflinePlayer(info.getUniqueId()).getName();
         }
         return null;
     }
@@ -168,7 +179,7 @@ public class PAPIExpansion extends PlaceholderExpansion  {
     }
 
     private Optional<PlayerInfo> getPlayerInfo(@Nullable UUID uniqueId) {
-        return Optional.ofNullable(Main.getInstance().getDatabase().getGameData().getInfo(uniqueId));
+        return Optional.ofNullable(
+                Main.getInstance().getDatabase().getGameData().getInfo(uniqueId));
     }
-
 }

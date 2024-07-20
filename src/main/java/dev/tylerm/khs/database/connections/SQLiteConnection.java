@@ -20,6 +20,7 @@
 package dev.tylerm.khs.database.connections;
 
 import dev.tylerm.khs.Main;
+
 import org.sqlite.SQLiteConfig;
 
 import java.io.File;
@@ -32,7 +33,7 @@ public class SQLiteConnection implements DatabaseConnection {
     private final File databaseFile;
     private final SQLiteConfig config;
 
-    public SQLiteConnection(){
+    public SQLiteConnection() {
 
         try {
             Class.forName("org.sqlite.JDBC");
@@ -52,7 +53,7 @@ public class SQLiteConnection implements DatabaseConnection {
     public Connection connect() {
         Connection conn = null;
         try {
-            String url = "jdbc:sqlite:"+databaseFile.getPath();
+            String url = "jdbc:sqlite:" + databaseFile.getPath();
             conn = DriverManager.getConnection(url, config.toProperties());
         } catch (SQLException e) {
             Main.getInstance().getLogger().severe(e.getMessage());
@@ -60,5 +61,4 @@ public class SQLiteConnection implements DatabaseConnection {
         }
         return conn;
     }
-
 }

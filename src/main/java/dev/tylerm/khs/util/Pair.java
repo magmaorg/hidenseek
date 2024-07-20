@@ -17,5 +17,4 @@ public class Pair<L, R> {
     public R getRight() {
         return right;
     }
-
 }

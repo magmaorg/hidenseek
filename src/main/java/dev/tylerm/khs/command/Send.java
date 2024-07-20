@@ -7,6 +7,7 @@ import dev.tylerm.khs.configuration.Localization;
 import dev.tylerm.khs.configuration.Map;
 import dev.tylerm.khs.configuration.Maps;
 import dev.tylerm.khs.game.util.Status;
+
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
@@ -23,12 +24,12 @@ public class Send implements ICommand {
         }
 
         Map map = Maps.getMap(args[0]);
-        if(map == null) {
+        if (map == null) {
             sender.sendMessage(Config.errorPrefix + Localization.message("INVALID_MAP"));
             return;
         }
 
-        if(map.isNotSetup()){
+        if (map.isNotSetup()) {
             sender.sendMessage(Config.errorPrefix + Localization.message("MAP_NOT_SETUP"));
             return;
         }
@@ -40,10 +41,9 @@ public class Send implements ICommand {
 
         Main.getInstance().getGame().setCurrentMap(map);
         Main.getInstance().getBoard().reloadLobbyBoards();
-        for(Player player : Main.getInstance().getBoard().getPlayers()) {
+        for (Player player : Main.getInstance().getBoard().getPlayers()) {
             map.getLobby().teleport(player);
         }
-
     }
 
     public String getLabel() {
@@ -59,10 +59,12 @@ public class Send implements ICommand {
     }
 
     public List<String> autoComplete(@NotNull String parameter, @NotNull String typed) {
-        if(parameter.equals("map")) {
-            return Maps.getAllMaps().stream().filter(map -> !map.isNotSetup()).map(Map::getName).collect(Collectors.toList());
+        if (parameter.equals("map")) {
+            return Maps.getAllMaps().stream()
+                    .filter(map -> !map.isNotSetup())
+                    .map(Map::getName)
+                    .collect(Collectors.toList());
         }
         return null;
     }
-
 }

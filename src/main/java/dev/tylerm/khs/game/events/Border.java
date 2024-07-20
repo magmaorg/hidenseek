@@ -1,10 +1,10 @@
 package dev.tylerm.khs.game.events;
 
-import dev.tylerm.khs.Main;
-import dev.tylerm.khs.configuration.Map;
-
 import static dev.tylerm.khs.configuration.Config.*;
 import static dev.tylerm.khs.configuration.Localization.message;
+
+import dev.tylerm.khs.Main;
+import dev.tylerm.khs.configuration.Map;
 
 public class Border {
 
@@ -21,34 +21,38 @@ public class Border {
 
     public void update() {
         if (delay == 30 && !running) {
-            Main.getInstance().getGame().broadcastMessage(worldBorderPrefix + message("WORLDBORDER_WARN"));
+            Main.getInstance()
+                    .getGame()
+                    .broadcastMessage(worldBorderPrefix + message("WORLDBORDER_WARN"));
         } else if (delay == 0) {
             if (running) {
                 delay = (int) (60 * map.getWorldBorderData().getY());
                 running = false;
-            }
-            else decreaseWorldBorder();
+            } else decreaseWorldBorder();
         }
         delay--;
     }
 
     private void decreaseWorldBorder() {
         if (currentSize == 100) return;
-        if(map.getGameSpawn().load() == null) return;
+        if (map.getGameSpawn().load() == null) return;
         int change = (int) map.getWorldBorderData().getZ();
-        if (currentSize-change < 100) {
-            change = currentSize-100;
+        if (currentSize - change < 100) {
+            change = currentSize - 100;
         }
         running = true;
-        Main.getInstance().getGame().broadcastMessage(worldBorderPrefix + message("WORLDBORDER_DECREASING").addAmount(change));
+        Main.getInstance()
+                .getGame()
+                .broadcastMessage(
+                        worldBorderPrefix + message("WORLDBORDER_DECREASING").addAmount(change));
         currentSize -= map.getWorldBorderData().getZ();
         org.bukkit.WorldBorder border = map.getGameSpawn().load().getWorldBorder();
-        border.setSize(border.getSize()-change,30);
+        border.setSize(border.getSize() - change, 30);
         delay = 30;
     }
 
     public void resetWorldBorder() {
-        if(map.getGameSpawn().load() == null) return;
+        if (map.getGameSpawn().load() == null) return;
         org.bukkit.WorldBorder border = map.getGameSpawn().load().getWorldBorder();
         if (map.isWorldBorderEnabled()) {
             border.setSize(map.getWorldBorderData().getX());
@@ -68,5 +72,4 @@ public class Border {
     public boolean isRunning() {
         return running;
     }
-
 }

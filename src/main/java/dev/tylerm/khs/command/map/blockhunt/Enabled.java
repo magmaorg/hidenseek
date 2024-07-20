@@ -7,6 +7,7 @@ import dev.tylerm.khs.configuration.Localization;
 import dev.tylerm.khs.configuration.Map;
 import dev.tylerm.khs.configuration.Maps;
 import dev.tylerm.khs.game.util.Status;
+
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -27,15 +28,19 @@ public class Enabled implements ICommand {
             return;
         }
         Map map = Maps.getMap(args[0]);
-        if(map == null) {
+        if (map == null) {
             sender.sendMessage(Config.errorPrefix + Localization.message("INVALID_MAP"));
             return;
         }
         boolean bool = Boolean.parseBoolean(args[1]);
         map.setBlockhunt(bool, map.getBlockHunt());
         Maps.setMap(map.getName(), map);
-        sender.sendMessage(Config.messagePrefix + Localization.message("BLOCKHUNT_SET_TO")
-                .addAmount(bool ? ChatColor.GREEN + "true" : ChatColor.RED + "false") + ChatColor.WHITE);
+        sender.sendMessage(
+                Config.messagePrefix
+                        + Localization.message("BLOCKHUNT_SET_TO")
+                                .addAmount(
+                                        bool ? ChatColor.GREEN + "true" : ChatColor.RED + "false")
+                        + ChatColor.WHITE);
     }
 
     public String getLabel() {
@@ -51,13 +56,12 @@ public class Enabled implements ICommand {
     }
 
     public List<String> autoComplete(@NotNull String parameter, @NotNull String typed) {
-        if(parameter.equals("map")) {
+        if (parameter.equals("map")) {
             return Maps.getAllMaps().stream().map(Map::getName).collect(Collectors.toList());
         }
-        if(parameter.equals("bool")) {
+        if (parameter.equals("bool")) {
             return Arrays.asList("true", "false");
         }
         return null;
     }
-
 }

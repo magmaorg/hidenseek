@@ -1,6 +1,11 @@
 package dev.tylerm.khs.game.events;
 
+import static dev.tylerm.khs.configuration.Config.*;
+import static dev.tylerm.khs.configuration.Config.tauntDelay;
+import static dev.tylerm.khs.configuration.Localization.message;
+
 import dev.tylerm.khs.Main;
+
 import org.bukkit.Color;
 import org.bukkit.FireworkEffect;
 import org.bukkit.World;
@@ -12,10 +17,6 @@ import org.bukkit.inventory.meta.FireworkMeta;
 import java.util.Optional;
 import java.util.Random;
 import java.util.UUID;
-
-import static dev.tylerm.khs.configuration.Config.*;
-import static dev.tylerm.khs.configuration.Config.tauntDelay;
-import static dev.tylerm.khs.configuration.Localization.message;
 
 public class Taunt {
 
@@ -38,7 +39,10 @@ public class Taunt {
     }
 
     private void executeTaunt() {
-        Optional<Player> rand = Main.getInstance().getBoard().getHiders().stream().skip(new Random().nextInt(Main.getInstance().getBoard().size())).findFirst();
+        Optional<Player> rand =
+                Main.getInstance().getBoard().getHiders().stream()
+                        .skip(new Random().nextInt(Main.getInstance().getBoard().size()))
+                        .findFirst();
         if (!rand.isPresent()) {
             Main.getInstance().getLogger().warning("Failed to select random seeker.");
             return;
@@ -55,7 +59,9 @@ public class Taunt {
         Player taunted = Main.getInstance().getBoard().getPlayer(tauntPlayer);
         if (taunted != null) {
             if (!Main.getInstance().getBoard().isHider(taunted)) {
-                Main.getInstance().getLogger().info("Taunted played died and is now seeker. Skipping taunt.");
+                Main.getInstance()
+                        .getLogger()
+                        .info("Taunted played died and is now seeker. Skipping taunt.");
                 tauntPlayer = null;
                 running = false;
                 delay = tauntDelay;
@@ -63,7 +69,9 @@ public class Taunt {
             }
             World world = taunted.getLocation().getWorld();
             if (world == null) {
-                Main.getInstance().getLogger().severe("Game world is null while trying to launch taunt.");
+                Main.getInstance()
+                        .getLogger()
+                        .severe("Game world is null while trying to launch taunt.");
                 tauntPlayer = null;
                 running = false;
                 delay = tauntDelay;
@@ -72,16 +80,17 @@ public class Taunt {
             Firework fw = (Firework) world.spawnEntity(taunted.getLocation(), EntityType.FIREWORK);
             FireworkMeta fwm = fw.getFireworkMeta();
             fwm.setPower(4);
-            fwm.addEffect(FireworkEffect.builder()
-                    .withColor(Color.BLUE)
-                    .withColor(Color.RED)
-                    .withColor(Color.YELLOW)
-                    .with(FireworkEffect.Type.STAR)
-                    .with(FireworkEffect.Type.BALL)
-                    .with(FireworkEffect.Type.BALL_LARGE)
-                    .flicker(true)
-                    .withTrail()
-                    .build());
+            fwm.addEffect(
+                    FireworkEffect.builder()
+                            .withColor(Color.BLUE)
+                            .withColor(Color.RED)
+                            .withColor(Color.YELLOW)
+                            .with(FireworkEffect.Type.STAR)
+                            .with(FireworkEffect.Type.BALL)
+                            .with(FireworkEffect.Type.BALL_LARGE)
+                            .flicker(true)
+                            .withTrail()
+                            .build());
             fw.setFireworkMeta(fwm);
             Main.getInstance().getGame().broadcastMessage(tauntPrefix + message("TAUNT_ACTIVATE"));
         }
@@ -97,5 +106,4 @@ public class Taunt {
     public boolean isRunning() {
         return running;
     }
-
 }

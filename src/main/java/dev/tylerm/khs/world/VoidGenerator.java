@@ -30,11 +30,12 @@ public class VoidGenerator extends ChunkGenerator {
     }
 
     // 1.13 And Prev
-    public ChunkData generateChunkData(World world, Random random, int chunkX, int chunkZ, BiomeGrid biome) {
+    public ChunkData generateChunkData(
+            World world, Random random, int chunkX, int chunkZ, BiomeGrid biome) {
         ChunkData chunkData = super.createChunkData(world);
 
-        for(int x = 0; x < 16; x++) {
-            for(int z = 0; z < 16; z++) {
+        for (int x = 0; x < 16; x++) {
+            for (int z = 0; z < 16; z++) {
                 biome.setBiome(x, z, Biome.PLAINS);
             }
         }
@@ -47,9 +48,8 @@ public class VoidGenerator extends ChunkGenerator {
         return new byte[world.getMaxHeight() / 16];
     }
 
-    public byte[][] generateBlockSections(World world, Random random, int x, int z, ChunkGenerator.BiomeGrid biomes) {
+    public byte[][] generateBlockSections(
+            World world, Random random, int x, int z, ChunkGenerator.BiomeGrid biomes) {
         return new byte[world.getMaxHeight() / 16][];
     }
-
-
 }

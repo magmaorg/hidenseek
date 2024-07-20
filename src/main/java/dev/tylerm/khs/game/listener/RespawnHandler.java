@@ -1,6 +1,7 @@
 package dev.tylerm.khs.game.listener;
 
 import dev.tylerm.khs.Main;
+
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -24,7 +25,12 @@ public class RespawnHandler implements Listener {
         event.setKeepInventory(true);
         event.setDeathMessage("");
         temp_loc.put(player.getUniqueId(), player.getLocation());
-        Main.getInstance().getLogger().severe("Player " + player.getName() + " died when not supposed to. Attempting to roll back death.");
+        Main.getInstance()
+                .getLogger()
+                .severe(
+                        "Player "
+                                + player.getName()
+                                + " died when not supposed to. Attempting to roll back death.");
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
@@ -36,5 +42,4 @@ public class RespawnHandler implements Listener {
             temp_loc.remove(player.getUniqueId());
         }
     }
-
 }

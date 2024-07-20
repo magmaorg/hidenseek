@@ -18,18 +18,18 @@ public class EntityMetadataPacket extends AbstractPacket {
     private final WrappedDataWatcher watcher;
     private final WrappedDataWatcher.Serializer serializer;
 
-    public EntityMetadataPacket(){
+    public EntityMetadataPacket() {
         super(PacketType.Play.Server.ENTITY_METADATA);
         watcher = new WrappedDataWatcher();
         serializer = WrappedDataWatcher.Registry.get(Byte.class);
     }
 
-    public void setEntity(@NotNull Entity target){
+    public void setEntity(@NotNull Entity target) {
         super.packet.getIntegers().write(0, target.getEntityId());
         watcher.setEntity(target);
     }
 
-    public void setGlow(boolean glowing){
+    public void setGlow(boolean glowing) {
         if (glowing) {
             watcher.setObject(0, serializer, (byte) (0x40));
         } else {
@@ -43,17 +43,16 @@ public class EntityMetadataPacket extends AbstractPacket {
 
             final List<WrappedDataValue> wrappedDataValueList = new ArrayList<>();
 
-            for(final WrappedWatchableObject entry : watcher.getWatchableObjects()) {
-                if(entry == null) continue;
+            for (final WrappedWatchableObject entry : watcher.getWatchableObjects()) {
+                if (entry == null) continue;
 
-                final WrappedDataWatcher.WrappedDataWatcherObject watcherObject = entry.getWatcherObject();
+                final WrappedDataWatcher.WrappedDataWatcherObject watcherObject =
+                        entry.getWatcherObject();
                 wrappedDataValueList.add(
                         new WrappedDataValue(
                                 watcherObject.getIndex(),
                                 watcherObject.getSerializer(),
-                                entry.getRawValue()
-                        )
-                );
+                                entry.getRawValue()));
             }
 
             packet.getDataValueCollectionModifier().write(0, wrappedDataValueList);
@@ -61,9 +60,6 @@ public class EntityMetadataPacket extends AbstractPacket {
         } else {
 
             packet.getWatchableCollectionModifier().write(0, watcher.getWatchableObjects());
-        
         }
-
     }
-
 }

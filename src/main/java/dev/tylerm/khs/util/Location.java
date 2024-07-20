@@ -1,7 +1,10 @@
 package dev.tylerm.khs.util;
 
-import dev.tylerm.khs.world.VoidGenerator;
+import static dev.tylerm.khs.configuration.Config.spawnPatch;
+
 import dev.tylerm.khs.Main;
+import dev.tylerm.khs.world.VoidGenerator;
+
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.WorldCreator;
@@ -11,8 +14,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 
-import static dev.tylerm.khs.configuration.Config.spawnPatch;
-
 public class Location {
 
     private final String world;
@@ -21,22 +22,13 @@ public class Location {
     private final double z;
 
     public static Location getDefault() {
-        return new Location(
-                "",
-                0.0,
-                0.0,
-                0.0
-        );
+        return new Location("", 0.0, 0.0, 0.0);
     }
 
     public static Location from(Player player) {
         org.bukkit.Location location = player.getLocation();
         return new Location(
-                player.getWorld().getName(),
-                location.getX(),
-                location.getY(),
-                location.getZ()
-        );
+                player.getWorld().getName(), location.getX(), location.getY(), location.getZ());
     }
 
     public Location(@NotNull String world, double x, double y, double z) {
@@ -56,15 +48,15 @@ public class Location {
     public World load(WorldType type, World.Environment environment) {
         boolean mapSave = world.startsWith("hs_");
         World bukkitWorld = Bukkit.getWorld(world);
-        if(bukkitWorld != null) return bukkitWorld;
+        if (bukkitWorld != null) return bukkitWorld;
         WorldCreator creator = new WorldCreator(world);
-        if(type != null) {
+        if (type != null) {
             creator.type(type);
         }
-        if(environment != null) {
+        if (environment != null) {
             creator.environment(environment);
         }
-        if(mapSave) {
+        if (mapSave) {
             creator.generator(new VoidGenerator());
         }
         Bukkit.getServer().createWorld(creator).setAutoSave(!mapSave);
@@ -72,23 +64,18 @@ public class Location {
     }
 
     public World load() {
-        if(!exists()) return null;
-        if(!Main.getInstance().isLoaded()) return null;
+        if (!exists()) return null;
+        if (!Main.getInstance().isLoaded()) return null;
         return load(null, null);
     }
 
     private org.bukkit.Location toBukkit() {
-        return new org.bukkit.Location(
-                Bukkit.getWorld(world),
-                x,
-                y,
-                z
-        );
+        return new org.bukkit.Location(Bukkit.getWorld(world), x, y, z);
     }
 
     public void teleport(Player player) {
-        if(!exists()) return;
-        if(load() == null) return;
+        if (!exists()) return;
+        if (load() == null) return;
         if (spawnPatch) {
             Main.getInstance().scheduleTask(() -> player.teleport(toBukkit()));
         } else {
@@ -97,12 +84,7 @@ public class Location {
     }
 
     public Location changeWorld(String world) {
-        return new Location(
-                world,
-                x,
-                y,
-                z
-        );
+        return new Location(world, x, y, z);
     }
 
     public String getWorld() {
@@ -122,20 +104,20 @@ public class Location {
     }
 
     public int getBlockX() {
-        return (int)x;
+        return (int) x;
     }
 
     public int getBlockY() {
-        return (int)y;
+        return (int) y;
     }
 
     public int getBlockZ() {
-        return (int)z;
+        return (int) z;
     }
 
     public boolean exists() {
-        if(world.equals("")) return false;
-        String path = Main.getInstance().getWorldContainer()+File.separator+world;
+        if (world.equals("")) return false;
+        String path = Main.getInstance().getWorldContainer() + File.separator + world;
         File destination = new File(path);
         return destination.isDirectory();
     }
@@ -145,7 +127,9 @@ public class Location {
     }
 
     public boolean isNotInBounds(int xmin, int xmax, int zmin, int zmax) {
-        return getBlockX() <= xmin || getBlockX() >= xmax || getBlockZ() <= zmin || getBlockZ() >= zmax;
+        return getBlockX() <= xmin
+                || getBlockX() >= xmax
+                || getBlockZ() <= zmin
+                || getBlockZ() >= zmax;
     }
-
 }

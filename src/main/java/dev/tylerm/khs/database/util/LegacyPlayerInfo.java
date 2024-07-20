@@ -45,6 +45,7 @@ public class LegacyPlayerInfo {
         return seekerWins;
     }
 
-    public int getGamesPlayer() { return gamesPlayed; }
-
+    public int getGamesPlayer() {
+        return gamesPlayed;
+    }
 }

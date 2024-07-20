@@ -1,9 +1,11 @@
 package dev.tylerm.khs.game.listener;
 
 import com.google.common.collect.Sets;
-import dev.tylerm.khs.game.listener.events.PlayerJumpEvent;
+
 import dev.tylerm.khs.Main;
 import dev.tylerm.khs.configuration.Map;
+import dev.tylerm.khs.game.listener.events.PlayerJumpEvent;
+
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -27,16 +29,21 @@ public class MovementHandler implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onJump(PlayerJumpEvent event) {
-        if(Main.getInstance().getBoard().isSpectator(event.getPlayer()) && event.getPlayer().getAllowFlight()) {
+        if (Main.getInstance().getBoard().isSpectator(event.getPlayer())
+                && event.getPlayer().getAllowFlight()) {
             event.getPlayer().setFlying(true);
         }
     }
 
-    private void checkJumping(PlayerMoveEvent event){
+    private void checkJumping(PlayerMoveEvent event) {
         if (event.getPlayer().getVelocity().getY() > 0) {
-            if (event.getPlayer().getLocation().getBlock().getType() != Material.LADDER && prevPlayersOnGround.contains(event.getPlayer().getUniqueId())) {
+            if (event.getPlayer().getLocation().getBlock().getType() != Material.LADDER
+                    && prevPlayersOnGround.contains(event.getPlayer().getUniqueId())) {
                 if (!event.getPlayer().isOnGround()) {
-                    Main.getInstance().getServer().getPluginManager().callEvent(new PlayerJumpEvent(event.getPlayer()));
+                    Main.getInstance()
+                            .getServer()
+                            .getPluginManager()
+                            .callEvent(new PlayerJumpEvent(event.getPlayer()));
                 }
             }
         }
@@ -47,15 +54,23 @@ public class MovementHandler implements Listener {
         }
     }
 
-    private void checkBounds(PlayerMoveEvent event){
+    private void checkBounds(PlayerMoveEvent event) {
         if (!Main.getInstance().getBoard().contains(event.getPlayer())) return;
-        if (!event.getPlayer().getWorld().getName().equals(Main.getInstance().getGame().getCurrentMap().getGameSpawnName())) return;
-        if (!event.getTo().getWorld().getName().equals(Main.getInstance().getGame().getCurrentMap().getGameSpawnName())) return;
+        if (!event.getPlayer()
+                .getWorld()
+                .getName()
+                .equals(Main.getInstance().getGame().getCurrentMap().getGameSpawnName())) return;
+        if (!event.getTo()
+                .getWorld()
+                .getName()
+                .equals(Main.getInstance().getGame().getCurrentMap().getGameSpawnName())) return;
         if (event.getPlayer().hasPermission("hs.leavebounds")) return;
         Map map = Main.getInstance().getGame().getCurrentMap();
-        if (event.getTo().getBlockX() < map.getBoundsMin().getBlockX() || event.getTo().getBlockX() > map.getBoundsMax().getBlockX() || event.getTo().getBlockZ() < map.getBoundsMin().getZ() || event.getTo().getBlockZ() > map.getBoundsMax().getZ()) {
+        if (event.getTo().getBlockX() < map.getBoundsMin().getBlockX()
+                || event.getTo().getBlockX() > map.getBoundsMax().getBlockX()
+                || event.getTo().getBlockZ() < map.getBoundsMin().getZ()
+                || event.getTo().getBlockZ() > map.getBoundsMax().getZ()) {
             event.setCancelled(true);
         }
     }
-
 }

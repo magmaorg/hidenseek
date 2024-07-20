@@ -74,4 +74,3 @@ permissions:
     default: op
   hs.leavebounds:
     default: false
-

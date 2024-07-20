@@ -33,5 +33,4 @@ public class LocalizationString {
     public String toString() {
         return message;
     }
-
 }

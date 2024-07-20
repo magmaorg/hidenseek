@@ -46,32 +46,34 @@
 
 lobby:
   title: "&eHIDE AND SEEK"
-  content: [
-    "{COUNTDOWN}",
-    "",
-    "Players: {COUNT}",
-    "",
-    "&cSEEKER % &f{SEEKER%}",
-    "&6HIDER % &f{HIDER%}",
-    "",
-    "Map: {MAP}",
-  ]
+  content:
+    [
+      "{COUNTDOWN}",
+      "",
+      "Players: {COUNT}",
+      "",
+      "&cSEEKER % &f{SEEKER%}",
+      "&6HIDER % &f{HIDER%}",
+      "",
+      "Map: {MAP}",
+    ]
 
 game:
   title: "&eHIDE AND SEEK"
-  content: [
-    "Map: {MAP}",
-    "Team: {TEAM}",
-    "",
-    "Time Left: &a{TIME}",
-    "",
-    "Taunt: &e{TAUNT}",
-    "Glow: {GLOW}",
-    "WorldBorder: &b{BORDER}",
-    "",
-    "&cSEEKERS: &f{#SEEKER}",
-    "&6HIDERS: &f{#HIDER}"
-  ]
+  content:
+    [
+      "Map: {MAP}",
+      "Team: {TEAM}",
+      "",
+      "Time Left: &a{TIME}",
+      "",
+      "Taunt: &e{TAUNT}",
+      "Glow: {GLOW}",
+      "WorldBorder: &b{BORDER}",
+      "",
+      "&cSEEKERS: &f{#SEEKER}",
+      "&6HIDERS: &f{#HIDER}",
+    ]
 
 countdown:
   waiting: "Waiting for players..."

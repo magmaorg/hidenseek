@@ -7,6 +7,7 @@ import dev.tylerm.khs.configuration.Localization;
 import dev.tylerm.khs.configuration.Map;
 import dev.tylerm.khs.configuration.Maps;
 import dev.tylerm.khs.game.util.Status;
+
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -27,24 +28,31 @@ public class Add implements ICommand {
             return;
         }
         Map map = Maps.getMap(args[0]);
-        if(map == null) {
+        if (map == null) {
             sender.sendMessage(Config.errorPrefix + Localization.message("INVALID_MAP"));
             return;
         }
         Material block;
-        try { block = Material.valueOf(args[1]); }
-        catch (IllegalArgumentException e) {
-            sender.sendMessage(Config.errorPrefix + Localization.message("COMMAND_INVALID_ARG").addAmount(args[1]));
+        try {
+            block = Material.valueOf(args[1]);
+        } catch (IllegalArgumentException e) {
+            sender.sendMessage(
+                    Config.errorPrefix
+                            + Localization.message("COMMAND_INVALID_ARG").addAmount(args[1]));
             return;
         }
         List<Material> blocks = map.getBlockHunt();
-        if(blocks.contains(block)) {
-            sender.sendMessage(Config.errorPrefix + Localization.message("BLOCKHUNT_BLOCK_EXISTS").addAmount(args[1]));
+        if (blocks.contains(block)) {
+            sender.sendMessage(
+                    Config.errorPrefix
+                            + Localization.message("BLOCKHUNT_BLOCK_EXISTS").addAmount(args[1]));
         }
         blocks.add(block);
         map.setBlockhunt(map.isBlockHuntEnabled(), blocks);
         Maps.setMap(map.getName(), map);
-        sender.sendMessage(Config.messagePrefix + Localization.message("BLOCKHUNT_BLOCK_ADDED").addAmount(args[1]));
+        sender.sendMessage(
+                Config.messagePrefix
+                        + Localization.message("BLOCKHUNT_BLOCK_ADDED").addAmount(args[1]));
     }
 
     public String getLabel() {
@@ -60,9 +68,9 @@ public class Add implements ICommand {
     }
 
     public List<String> autoComplete(@NotNull String parameter, @NotNull String typed) {
-        if(parameter.equals("map")) {
+        if (parameter.equals("map")) {
             return Maps.getAllMaps().stream().map(Map::getName).collect(Collectors.toList());
-        } else if(parameter.equals("block")) {
+        } else if (parameter.equals("block")) {
             return Arrays.stream(Material.values())
                     .filter(Material::isBlock)
                     .map(Material::toString)
@@ -71,5 +79,4 @@ public class Add implements ICommand {
         }
         return null;
     }
-
 }

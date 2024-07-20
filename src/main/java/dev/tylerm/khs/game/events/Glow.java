@@ -1,12 +1,14 @@
 package dev.tylerm.khs.game.events;
 
+import static dev.tylerm.khs.configuration.Config.*;
+
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
-import dev.tylerm.khs.util.packet.EntityMetadataPacket;
-import dev.tylerm.khs.Main;
-import org.bukkit.entity.Player;
 
-import static dev.tylerm.khs.configuration.Config.*;
+import dev.tylerm.khs.Main;
+import dev.tylerm.khs.util.packet.EntityMetadataPacket;
+
+import org.bukkit.entity.Player;
 
 public class Glow {
 
@@ -32,7 +34,7 @@ public class Glow {
     }
 
     public void update() {
-        if(alwaysGlow){
+        if (alwaysGlow) {
             sendPackets();
             return;
         }
@@ -66,7 +68,5 @@ public class Glow {
         packet.setGlow(glowing);
         packet.writeMetadata();
         packet.send(player);
-
     }
-
 }

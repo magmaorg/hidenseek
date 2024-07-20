@@ -1,6 +1,7 @@
 package dev.tylerm.khs.database;
 
 import dev.tylerm.khs.Main;
+
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.io.BukkitObjectInputStream;
 import org.bukkit.util.io.BukkitObjectOutputStream;
@@ -20,13 +21,15 @@ public class InventoryTable {
 
     protected InventoryTable(Database database) {
 
-        String sql = "CREATE TABLE IF NOT EXISTS hs_inventory (\n"
-                + "	uuid BINARY(16) NOT NULL,\n"
-                + "	inventory TEXT NOT NULL,\n"
-                + "	PRIMARY KEY (uuid)\n"
-                + ");";
+        String sql =
+                "CREATE TABLE IF NOT EXISTS hs_inventory (\n"
+                        + "	uuid BINARY(16) NOT NULL,\n"
+                        + "	inventory TEXT NOT NULL,\n"
+                        + "	PRIMARY KEY (uuid)\n"
+                        + ");";
 
-        try(Connection connection = database.connect(); Statement statement = connection.createStatement()) {
+        try (Connection connection = database.connect();
+                Statement statement = connection.createStatement()) {
             statement.executeUpdate(sql);
         } catch (SQLException e) {
             Main.getInstance().getLogger().severe("SQL Error: " + e.getMessage());
@@ -39,12 +42,13 @@ public class InventoryTable {
     @Nullable
     public ItemStack[] getInventory(@NotNull UUID uuid) {
         String sql = "SELECT * FROM hs_inventory WHERE uuid = ?;";
-        try(Connection connection = database.connect(); PreparedStatement statement = connection.prepareStatement(sql)) {
+        try (Connection connection = database.connect();
+                PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setBytes(1, database.encodeUUID(uuid));
-            ResultSet rs  = statement.executeQuery();
+            ResultSet rs = statement.executeQuery();
             if (rs.next()) {
                 String data = rs.getString("inventory");
-                if(data == null) return null;
+                if (data == null) return null;
                 return itemStackArrayFromBase64(data);
             }
             rs.close();
@@ -61,7 +65,8 @@ public class InventoryTable {
     public void saveInventory(@NotNull UUID uuid, @NotNull ItemStack[] itemArray) {
         String sql = "REPLACE INTO hs_inventory (uuid, inventory) VALUES (?,?)";
         String data = itemStackArrayToBase64(itemArray);
-        try(Connection connection = database.connect(); PreparedStatement statement = connection.prepareStatement(sql)) {
+        try (Connection connection = database.connect();
+                PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setBytes(1, database.encodeUUID(uuid));
             statement.setString(2, data);
             statement.execute();
@@ -82,13 +87,15 @@ public class InventoryTable {
 
             return Base64Coder.encodeLines(outputStream.toByteArray());
         } catch (Exception e) {
-            throw new IllegalStateException("Error whilst saving items, Please contact the developer", e);
+            throw new IllegalStateException(
+                    "Error whilst saving items, Please contact the developer", e);
         }
     }
 
     private ItemStack[] itemStackArrayFromBase64(String data) throws IOException {
         try {
-            ByteArrayInputStream inputStream = new ByteArrayInputStream(Base64Coder.decodeLines(data));
+            ByteArrayInputStream inputStream =
+                    new ByteArrayInputStream(Base64Coder.decodeLines(data));
             BukkitObjectInputStream dataInput = new BukkitObjectInputStream(inputStream);
 
             ItemStack[] itemArray = (ItemStack[]) dataInput.readObject();
@@ -99,5 +106,4 @@ public class InventoryTable {
             throw new IOException("Error whilst loading items, Please contact the developer", e);
         }
     }
-
 }

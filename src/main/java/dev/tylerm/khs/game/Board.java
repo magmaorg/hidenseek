@@ -1,10 +1,15 @@
 package dev.tylerm.khs.game;
 
+import static dev.tylerm.khs.configuration.Config.*;
+import static dev.tylerm.khs.configuration.Leaderboard.*;
+import static dev.tylerm.khs.configuration.Localization.message;
+
+import dev.tylerm.khs.Main;
 import dev.tylerm.khs.game.events.Border;
 import dev.tylerm.khs.game.events.Glow;
 import dev.tylerm.khs.game.events.Taunt;
 import dev.tylerm.khs.game.util.Status;
-import dev.tylerm.khs.Main;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -12,10 +17,6 @@ import org.bukkit.scoreboard.*;
 
 import java.util.*;
 import java.util.stream.Collectors;
-
-import static dev.tylerm.khs.configuration.Config.*;
-import static dev.tylerm.khs.configuration.Leaderboard.*;
-import static dev.tylerm.khs.configuration.Localization.message;
 
 public class Board {
 
@@ -28,7 +29,10 @@ public class Board {
     private List<UUID> initialSeekers = null;
     private final Map<UUID, Type> Players = new HashMap<>();
     private final Map<UUID, CustomBoard> customBoards = new HashMap<>();
-    private final Map<UUID, Integer> hider_kills = new HashMap<>(), seeker_kills = new HashMap<>(), hider_deaths = new HashMap<>(), seeker_deaths = new HashMap<>();
+    private final Map<UUID, Integer> hider_kills = new HashMap<>(),
+            seeker_kills = new HashMap<>(),
+            hider_deaths = new HashMap<>(),
+            seeker_deaths = new HashMap<>();
 
     public boolean contains(Player player) {
         return Players.containsKey(player.getUniqueId());
@@ -36,14 +40,14 @@ public class Board {
 
     public boolean containsUUID(UUID uuid) {
         return Players.containsKey(uuid);
-    } 
+    }
 
     public boolean isHider(Player player) {
         return isHider(player.getUniqueId());
     }
 
     public boolean isHider(UUID uuid) {
-        if(!Players.containsKey(uuid)) return false;
+        if (!Players.containsKey(uuid)) return false;
         return Players.get(uuid) == Type.HIDER;
     }
 
@@ -52,7 +56,7 @@ public class Board {
     }
 
     public boolean isSeeker(UUID uuid) {
-        if(!Players.containsKey(uuid)) return false;
+        if (!Players.containsKey(uuid)) return false;
         return Players.get(uuid) == Type.SEEKER;
     }
 
@@ -61,7 +65,7 @@ public class Board {
     }
 
     public boolean isSpectator(UUID uuid) {
-        if(!Players.containsKey(uuid)) return false;
+        if (!Players.containsKey(uuid)) return false;
         return Players.get(uuid) == Type.SPECTATOR;
     }
 
@@ -113,14 +117,17 @@ public class Board {
     }
 
     public List<Player> getInitialSeekers() {
-        if(initialSeekers == null) return null;
-        return initialSeekers.stream().map(u -> {
-            return Bukkit.getPlayer(u);
-        }).collect(Collectors.toList());
+        if (initialSeekers == null) return null;
+        return initialSeekers.stream()
+                .map(
+                        u -> {
+                            return Bukkit.getPlayer(u);
+                        })
+                .collect(Collectors.toList());
     }
 
     public Player getPlayer(UUID uuid) {
-        if(!Players.containsKey(uuid)) {
+        if (!Players.containsKey(uuid)) {
             return null;
         }
         return Bukkit.getPlayer(uuid);
@@ -155,20 +162,20 @@ public class Board {
     }
 
     public void addKill(UUID uuid) {
-        if(Players.get(uuid) == Type.HIDER) {
+        if (Players.get(uuid) == Type.HIDER) {
             int kills = hider_kills.getOrDefault(uuid, 0);
             hider_kills.put(uuid, kills + 1);
-        } else if(Players.get(uuid) == Type.SEEKER) {
+        } else if (Players.get(uuid) == Type.SEEKER) {
             int kills = seeker_kills.getOrDefault(uuid, 0);
             seeker_kills.put(uuid, kills + 1);
         }
     }
 
     public void addDeath(UUID uuid) {
-        if(Players.get(uuid) == Type.HIDER) {
+        if (Players.get(uuid) == Type.HIDER) {
             int kills = hider_deaths.getOrDefault(uuid, 0);
             hider_deaths.put(uuid, kills + 1);
-        } else if(Players.get(uuid) == Type.SEEKER) {
+        } else if (Players.get(uuid) == Type.SEEKER) {
             int kills = seeker_deaths.getOrDefault(uuid, 0);
             seeker_deaths.put(uuid, kills + 1);
         }
@@ -200,22 +207,31 @@ public class Board {
             board = new CustomBoard(player, LOBBY_TITLE);
             board.updateTeams();
         }
-        int i=0;
-        for(String line : LOBBY_CONTENTS) {
+        int i = 0;
+        for (String line : LOBBY_CONTENTS) {
             if (line.equalsIgnoreCase("")) {
                 board.addBlank();
             } else if (line.contains("{COUNTDOWN}")) {
                 if (!lobbyCountdownEnabled) {
-                    board.setLine(String.valueOf(i), line.replace("{COUNTDOWN}", COUNTDOWN_ADMINSTART));
+                    board.setLine(
+                            String.valueOf(i), line.replace("{COUNTDOWN}", COUNTDOWN_ADMINSTART));
                 } else if (Main.getInstance().getGame().getLobbyTime() == -1) {
-                    board.setLine(String.valueOf(i), line.replace("{COUNTDOWN}", COUNTDOWN_WAITING));
+                    board.setLine(
+                            String.valueOf(i), line.replace("{COUNTDOWN}", COUNTDOWN_WAITING));
                 } else {
-                    board.setLine(String.valueOf(i), line.replace("{COUNTDOWN}", COUNTDOWN_COUNTING.replace("{AMOUNT}",Main.getInstance().getGame().getLobbyTime()+"")));
+                    board.setLine(
+                            String.valueOf(i),
+                            line.replace(
+                                    "{COUNTDOWN}",
+                                    COUNTDOWN_COUNTING.replace(
+                                            "{AMOUNT}",
+                                            Main.getInstance().getGame().getLobbyTime() + "")));
                 }
             } else if (line.contains("{COUNT}")) {
-                board.setLine(String.valueOf(i), line.replace("{COUNT}", getPlayers().size()+""));
+                board.setLine(String.valueOf(i), line.replace("{COUNT}", getPlayers().size() + ""));
             } else if (line.contains("{SEEKER%}")) {
-                board.setLine(String.valueOf(i), line.replace("{SEEKER%}", getSeekerPercent()+""));
+                board.setLine(
+                        String.valueOf(i), line.replace("{SEEKER%}", getSeekerPercent() + ""));
             } else if (line.contains("{HIDER%}")) {
                 board.setLine(String.valueOf(i), line.replace("{HIDER%}", getHiderPercent() + ""));
             } else if (line.contains("{MAP}")) {
@@ -231,7 +247,7 @@ public class Board {
 
     public String getMapName() {
         dev.tylerm.khs.configuration.Map map = Main.getInstance().getGame().getCurrentMap();
-        if(map == null) return "Invalid";
+        if (map == null) return "Invalid";
         else return map.getName();
     }
 
@@ -254,47 +270,73 @@ public class Board {
         Glow glow = Main.getInstance().getGame().getGlow();
 
         int i = 0;
-        for(String line : GAME_CONTENTS) {
+        for (String line : GAME_CONTENTS) {
             if (line.equalsIgnoreCase("")) {
                 board.addBlank();
             } else {
                 if (line.contains("{TIME}")) {
-                    String value = timeLeft/60 + "m" + timeLeft%60 + "s";
+                    String value = timeLeft / 60 + "m" + timeLeft % 60 + "s";
                     board.setLine(String.valueOf(i), line.replace("{TIME}", value));
                 } else if (line.contains("{TEAM}")) {
                     String value = getTeam(player);
                     board.setLine(String.valueOf(i), line.replace("{TEAM}", value));
                 } else if (line.contains("{BORDER}")) {
-                    if (!Main.getInstance().getGame().getCurrentMap().isWorldBorderEnabled()) continue;
+                    if (!Main.getInstance().getGame().getCurrentMap().isWorldBorderEnabled())
+                        continue;
                     if (status == Status.STARTING) {
-                        board.setLine(String.valueOf(i), line.replace("{BORDER}", BORDER_COUNTING.replace("{AMOUNT}", "0")));
+                        board.setLine(
+                                String.valueOf(i),
+                                line.replace("{BORDER}", BORDER_COUNTING.replace("{AMOUNT}", "0")));
                     } else if (!worldBorder.isRunning()) {
-                        board.setLine(String.valueOf(i), line.replace("{BORDER}", BORDER_COUNTING.replaceFirst("\\{AMOUNT}", worldBorder.getDelay()/60+"").replaceFirst("\\{AMOUNT}", worldBorder.getDelay()%60+"")));
+                        board.setLine(
+                                String.valueOf(i),
+                                line.replace(
+                                        "{BORDER}",
+                                        BORDER_COUNTING
+                                                .replaceFirst(
+                                                        "\\{AMOUNT}",
+                                                        worldBorder.getDelay() / 60 + "")
+                                                .replaceFirst(
+                                                        "\\{AMOUNT}",
+                                                        worldBorder.getDelay() % 60 + "")));
                     } else {
-                        board.setLine(String.valueOf(i), line.replace("{BORDER}", BORDER_DECREASING));
+                        board.setLine(
+                                String.valueOf(i), line.replace("{BORDER}", BORDER_DECREASING));
                     }
                 } else if (line.contains("{TAUNT}")) {
                     if (!tauntEnabled) continue;
                     if (taunt == null || status == Status.STARTING) {
-                        board.setLine(String.valueOf(i), line.replace("{TAUNT}", TAUNT_COUNTING.replace("{AMOUNT}", "0")));
+                        board.setLine(
+                                String.valueOf(i),
+                                line.replace("{TAUNT}", TAUNT_COUNTING.replace("{AMOUNT}", "0")));
                     } else if (!tauntLast && sizeHider() == 1) {
                         board.setLine(String.valueOf(i), line.replace("{TAUNT}", TAUNT_EXPIRED));
                     } else if (!taunt.isRunning()) {
-                        board.setLine(String.valueOf(i), line.replace("{TAUNT}", TAUNT_COUNTING.replaceFirst("\\{AMOUNT}", taunt.getDelay() / 60 + "").replaceFirst("\\{AMOUNT}", taunt.getDelay() % 60 + "")));
+                        board.setLine(
+                                String.valueOf(i),
+                                line.replace(
+                                        "{TAUNT}",
+                                        TAUNT_COUNTING
+                                                .replaceFirst(
+                                                        "\\{AMOUNT}", taunt.getDelay() / 60 + "")
+                                                .replaceFirst(
+                                                        "\\{AMOUNT}", taunt.getDelay() % 60 + "")));
                     } else {
                         board.setLine(String.valueOf(i), line.replace("{TAUNT}", TAUNT_ACTIVE));
                     }
                 } else if (line.contains("{GLOW}")) {
-                    if (!glowEnabled)  continue;
+                    if (!glowEnabled) continue;
                     if (glow == null || status == Status.STARTING || !glow.isRunning()) {
                         board.setLine(String.valueOf(i), line.replace("{GLOW}", GLOW_INACTIVE));
                     } else {
                         board.setLine(String.valueOf(i), line.replace("{GLOW}", GLOW_ACTIVE));
                     }
                 } else if (line.contains("{#SEEKER}")) {
-                    board.setLine(String.valueOf(i), line.replace("{#SEEKER}", getSeekers().size()+""));
+                    board.setLine(
+                            String.valueOf(i), line.replace("{#SEEKER}", getSeekers().size() + ""));
                 } else if (line.contains("{#HIDER}")) {
-                    board.setLine(String.valueOf(i), line.replace("{#HIDER}", getHiders().size()+""));
+                    board.setLine(
+                            String.valueOf(i), line.replace("{#HIDER}", getHiders().size() + ""));
                 } else if (line.contains("{MAP}")) {
                     board.setLine(String.valueOf(i), line.replace("{MAP}", getMapName() + ""));
                 } else {
@@ -315,34 +357,27 @@ public class Board {
     }
 
     public void reloadLobbyBoards() {
-        for(Player player : getPlayers())
-            createLobbyBoard(player, false);
+        for (Player player : getPlayers()) createLobbyBoard(player, false);
     }
 
     public void reloadGameBoards() {
-        for(Player player : getPlayers())
-            createGameBoard(player, false);
+        for (Player player : getPlayers()) createGameBoard(player, false);
     }
 
     public void reloadBoardTeams() {
-        for(CustomBoard board : customBoards.values())
-            board.updateTeams();
+        for (CustomBoard board : customBoards.values()) board.updateTeams();
     }
 
     private String getSeekerPercent() {
         int size = size();
-        if (size < 2)
-            return " --";
-        else
-            return " "+(int)(100*(1.0/size));
+        if (size < 2) return " --";
+        else return " " + (int) (100 * (1.0 / size));
     }
 
     private String getHiderPercent() {
         int size = size();
-        if (size < 2)
-            return " --";
-        else
-            return " "+(int)(100-100*(1.0/size));
+        if (size < 2) return " --";
+        else return " " + (int) (100 - 100 * (1.0 / size));
     }
 
     private String getTeam(Player player) {
@@ -353,11 +388,11 @@ public class Board {
     }
 
     public void cleanup() {
-        Players.clear();;
+        Players.clear();
+        ;
         initialSeekers = null;
         customBoards.clear();
     }
-
 }
 
 @SuppressWarnings("deprecation")
@@ -366,7 +401,7 @@ class CustomBoard {
     private final Scoreboard board;
     private final Objective obj;
     private final Player player;
-    private final Map<String,Line> LINES;
+    private final Map<String, Line> LINES;
     private int blanks;
     private boolean displayed;
 
@@ -377,8 +412,11 @@ class CustomBoard {
         this.LINES = new HashMap<>();
         this.player = player;
         if (Main.getInstance().supports(13)) {
-            this.obj = board.registerNewObjective(
-                    "Scoreboard", "dummy", ChatColor.translateAlternateColorCodes('&', title));
+            this.obj =
+                    board.registerNewObjective(
+                            "Scoreboard",
+                            "dummy",
+                            ChatColor.translateAlternateColorCodes('&', title));
         } else {
             this.obj = board.registerNewObjective("Scoreboard", "dummy");
             this.obj.setDisplayName(ChatColor.translateAlternateColorCodes('&', title));
@@ -389,24 +427,30 @@ class CustomBoard {
     }
 
     public void updateTeams() {
-        try{ board.registerNewTeam("Hider"); } catch (Exception ignored) {}
-        try{ board.registerNewTeam("Seeker"); } catch (Exception ignored) {}
+        try {
+            board.registerNewTeam("Hider");
+        } catch (Exception ignored) {
+        }
+        try {
+            board.registerNewTeam("Seeker");
+        } catch (Exception ignored) {
+        }
         Team hiderTeam = board.getTeam("Hider");
         assert hiderTeam != null;
-        for(String entry : hiderTeam.getEntries())
-            hiderTeam.removeEntry(entry);
-        for(Player player : Main.getInstance().getBoard().getHiders())
+        for (String entry : hiderTeam.getEntries()) hiderTeam.removeEntry(entry);
+        for (Player player : Main.getInstance().getBoard().getHiders())
             hiderTeam.addEntry(player.getName());
         Team seekerTeam = board.getTeam("Seeker");
         assert seekerTeam != null;
-        for(String entry : seekerTeam.getEntries())
-            seekerTeam.removeEntry(entry);
-        for(Player player  : Main.getInstance().getBoard().getSeekers())
+        for (String entry : seekerTeam.getEntries()) seekerTeam.removeEntry(entry);
+        for (Player player : Main.getInstance().getBoard().getSeekers())
             seekerTeam.addEntry(player.getName());
         if (Main.getInstance().supports(9)) {
             if (nameTagsVisible) {
-                hiderTeam.setOption(Team.Option.NAME_TAG_VISIBILITY, Team.OptionStatus.FOR_OWN_TEAM);
-                seekerTeam.setOption(Team.Option.NAME_TAG_VISIBILITY, Team.OptionStatus.FOR_OTHER_TEAMS);
+                hiderTeam.setOption(
+                        Team.Option.NAME_TAG_VISIBILITY, Team.OptionStatus.FOR_OWN_TEAM);
+                seekerTeam.setOption(
+                        Team.Option.NAME_TAG_VISIBILITY, Team.OptionStatus.FOR_OTHER_TEAMS);
             } else {
                 hiderTeam.setOption(Team.Option.NAME_TAG_VISIBILITY, Team.OptionStatus.NEVER);
                 seekerTeam.setOption(Team.Option.NAME_TAG_VISIBILITY, Team.OptionStatus.NEVER);
@@ -428,26 +472,23 @@ class CustomBoard {
 
     public void setLine(String key, String message) {
         Line line = LINES.get(key);
-        if (line == null)
-            addLine(key, ChatColor.translateAlternateColorCodes('&',message));
-        else
-            updateLine(key, ChatColor.translateAlternateColorCodes('&',message));
+        if (line == null) addLine(key, ChatColor.translateAlternateColorCodes('&', message));
+        else updateLine(key, ChatColor.translateAlternateColorCodes('&', message));
     }
 
     private void addLine(String key, String message) {
         Score score = obj.getScore(message);
-        score.setScore(LINES.values().size()+1);
-        Line line = new Line(LINES.values().size()+1, message);
+        score.setScore(LINES.values().size() + 1);
+        Line line = new Line(LINES.values().size() + 1, message);
         LINES.put(key, line);
     }
 
     public void addBlank() {
         if (displayed) return;
         StringBuilder temp = new StringBuilder();
-        for(int i = 0; i <= blanks; i ++)
-            temp.append(ChatColor.RESET);
+        for (int i = 0; i <= blanks; i++) temp.append(ChatColor.RESET);
         blanks++;
-        addLine("blank"+blanks, temp.toString());
+        addLine("blank" + blanks, temp.toString());
     }
 
     private void updateLine(String key, String message) {
@@ -464,7 +505,6 @@ class CustomBoard {
         obj.setDisplaySlot(DisplaySlot.SIDEBAR);
         player.setScoreboard(board);
     }
-
 }
 
 class Line {
@@ -488,5 +528,4 @@ class Line {
     public void setMessage(String message) {
         this.message = message;
     }
-
 }

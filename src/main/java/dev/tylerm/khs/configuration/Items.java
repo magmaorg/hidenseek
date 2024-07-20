@@ -1,7 +1,9 @@
 package dev.tylerm.khs.configuration;
 
 import com.cryptomorin.xseries.XItemStack;
+
 import dev.tylerm.khs.Main;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
@@ -16,12 +18,14 @@ import java.util.List;
 public class Items {
 
     public static List<ItemStack> HIDER_ITEMS, SEEKER_ITEMS;
-    public static ItemStack 
-        HIDER_HELM, SEEKER_HELM,
-        HIDER_CHEST, SEEKER_CHEST,
-        HIDER_LEGS, SEEKER_LEGS,
-        HIDER_BOOTS, SEEKER_BOOTS;
-
+    public static ItemStack HIDER_HELM,
+            SEEKER_HELM,
+            HIDER_CHEST,
+            SEEKER_CHEST,
+            HIDER_LEGS,
+            SEEKER_LEGS,
+            HIDER_BOOTS,
+            SEEKER_BOOTS;
     public static List<PotionEffect> HIDER_EFFECTS, SEEKER_EFFECTS;
 
     public static void loadItems() {
@@ -160,7 +164,8 @@ public class Items {
             if (material.contains("POTION")) {
                 config.set("level", 1);
             }
-            if (material.equalsIgnoreCase("SPLASH_POTION") || material.equalsIgnoreCase("LINGERING_POTION")) {
+            if (material.equalsIgnoreCase("SPLASH_POTION")
+                    || material.equalsIgnoreCase("LINGERING_POTION")) {
                 material = "POTION";
                 splash = true;
             }
@@ -174,10 +179,13 @@ public class Items {
                 config.set("model-data", item.getInt("model-data"));
             }
         }
-        if (item.isSet("lore"))
-            config.set("lore", item.getStringList("lore"));
-        if (material.equalsIgnoreCase("POTION") || material.equalsIgnoreCase("SPLASH_POTION") || material.equalsIgnoreCase("LINGERING_POTION"))
-            config.set("base-effect", String.format("%s,%s,%s", item.getString("type"), false, splash));
+        if (item.isSet("lore")) config.set("lore", item.getStringList("lore"));
+        if (material.equalsIgnoreCase("POTION")
+                || material.equalsIgnoreCase("SPLASH_POTION")
+                || material.equalsIgnoreCase("LINGERING_POTION"))
+            config.set(
+                    "base-effect",
+                    String.format("%s,%s,%s", item.getString("type"), false, splash));
         ItemStack stack = XItemStack.deserialize(config);
         int amt = item.getInt("amount");
         if (amt < 1) amt = 1;
@@ -195,15 +203,12 @@ public class Items {
                 item.getInt("duration"),
                 item.getInt("amplifier"),
                 item.getBoolean("ambient"),
-                item.getBoolean("particles")
-        );
+                item.getBoolean("particles"));
     }
 
-    public static boolean matchItem(ItemStack stack){
-        for(ItemStack check : HIDER_ITEMS)
-            if(equals(stack,check)) return true;
-        for(ItemStack check : SEEKER_ITEMS)
-            if(equals(stack,check)) return true;
+    public static boolean matchItem(ItemStack stack) {
+        for (ItemStack check : HIDER_ITEMS) if (equals(stack, check)) return true;
+        for (ItemStack check : SEEKER_ITEMS) if (equals(stack, check)) return true;
         return false;
     }
 
@@ -213,8 +218,10 @@ public class Items {
         } else if (a == b) {
             return true;
         } else {
-            return a.getType() == b.getType() && a.hasItemMeta() == b.hasItemMeta() && (!a.hasItemMeta() || Bukkit.getItemFactory().equals(a.getItemMeta(), b.getItemMeta()));
+            return a.getType() == b.getType()
+                    && a.hasItemMeta() == b.hasItemMeta()
+                    && (!a.hasItemMeta()
+                            || Bukkit.getItemFactory().equals(a.getItemMeta(), b.getItemMeta()));
         }
     }
-
 }
