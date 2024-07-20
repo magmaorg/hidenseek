@@ -13,9 +13,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class Status implements ICommand {
-
     public void execute(Player sender, String[] args) {
-
         String msg = Localization.message("SETUP").toString();
         int count = 0;
         Map map = Maps.getMap(args[0]);
@@ -57,10 +55,6 @@ public class Status implements ICommand {
         }
         if (Config.mapSaveEnabled && !map.getGameSpawn().exists()) {
             msg = msg + "\n" + Localization.message("SETUP_SAVEMAP");
-            count++;
-        }
-        if (map.isBlockHuntEnabled() && map.getBlockHunt().isEmpty()) {
-            msg = msg + "\n" + Localization.message("SETUP_BLOCKHUNT");
             count++;
         }
         if (count < 1) {

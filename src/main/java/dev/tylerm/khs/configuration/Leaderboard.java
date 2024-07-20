@@ -4,7 +4,6 @@ import java.util.Collections;
 import java.util.List;
 
 public class Leaderboard {
-
     public static String LOBBY_TITLE,
             GAME_TITLE,
             COUNTDOWN_WAITING,
@@ -20,7 +19,6 @@ public class Leaderboard {
     public static List<String> LOBBY_CONTENTS, GAME_CONTENTS;
 
     public static void loadLeaderboard() {
-
         ConfigManager leaderboard = ConfigManager.create("leaderboard.yml");
 
         LOBBY_TITLE = leaderboard.getString("lobby.title");

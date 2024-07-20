@@ -2,20 +2,14 @@ package dev.tylerm.khs.configuration;
 
 import static dev.tylerm.khs.configuration.Config.*;
 
-import dev.tylerm.khs.Main;
 import dev.tylerm.khs.game.events.Border;
 import dev.tylerm.khs.util.Location;
 import dev.tylerm.khs.world.WorldLoader;
 
-import org.bukkit.*;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class Map {
-
     private final String name;
 
     private dev.tylerm.khs.util.Location spawnPosition = dev.tylerm.khs.util.Location.getDefault(),
@@ -30,10 +24,6 @@ public class Map {
             worldBorderSize = 0,
             worldBorderDelay = 0,
             worldBorderChange = 0;
-
-    private boolean blockhunt = false;
-
-    private List<Material> blockhuntBlocks = new ArrayList<>();
 
     private final Border worldBorder;
 
@@ -72,15 +62,6 @@ public class Map {
             this.zWorldBorder = z;
         }
         this.worldBorder.resetWorldBorder();
-    }
-
-    public void setBlockhunt(boolean enabled, List<Material> blocks) {
-        if (Main.getInstance().supports(9)) {
-            this.blockhunt = enabled;
-        } else {
-            this.blockhunt = false;
-        }
-        this.blockhuntBlocks = blocks;
     }
 
     public void setBoundMin(int x, int z) {
@@ -166,15 +147,6 @@ public class Map {
         return worldBorder;
     }
 
-    public boolean isBlockHuntEnabled() {
-        return blockhunt;
-    }
-
-    @NotNull
-    public List<Material> getBlockHunt() {
-        return blockhuntBlocks;
-    }
-
     @NotNull
     public Vector getBoundsMin() {
         return new Vector(xBoundMin, 0, zBoundMin);
@@ -214,7 +186,6 @@ public class Map {
                         && seekerLobbyPosition.getBlockZ() == 0
                 || !seekerLobbyPosition.exists()) return true;
         if (mapSaveEnabled && !getGameSpawn().exists()) return true;
-        if (blockhunt && blockhuntBlocks.isEmpty()) return true;
         if (isWorldBorderEnabled()
                 && new Vector(spawnPosition.getX(), 0, spawnPosition.getZ())
                                 .distance(new Vector(xWorldBorder, 0, zWorldBorder))

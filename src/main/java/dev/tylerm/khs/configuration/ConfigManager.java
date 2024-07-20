@@ -13,7 +13,6 @@ import java.util.List;
 import java.util.Map;
 
 public class ConfigManager {
-
     private final File file;
     private YamlConfiguration config, defaultConfig;
     private String defaultFilename;
@@ -27,7 +26,6 @@ public class ConfigManager {
     }
 
     private ConfigManager(String filename, String defaultFilename) {
-
         File dataFolder = Main.getInstance().getDataFolder();
         File oldDataFolder =
                 new File(

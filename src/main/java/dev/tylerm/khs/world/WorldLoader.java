@@ -14,7 +14,6 @@ import java.io.*;
 import java.nio.file.Files;
 
 public class WorldLoader {
-
     private final Map map;
 
     public WorldLoader(Map map) {

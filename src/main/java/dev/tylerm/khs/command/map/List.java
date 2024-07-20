@@ -13,7 +13,6 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Collection;
 
 public class List implements ICommand {
-
     public void execute(Player sender, String[] args) {
         Collection<Map> maps = Maps.getAllMaps();
         if (maps.size() < 1) {

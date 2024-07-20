@@ -13,7 +13,6 @@ import java.util.Random;
 
 @SuppressWarnings({"unused"})
 public class VoidGenerator extends ChunkGenerator {
-
     // 1.14 And On
     public @NotNull List<BlockPopulator> getDefaultPopulators(@NotNull World world) {
         return Collections.emptyList();

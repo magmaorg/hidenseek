@@ -16,7 +16,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class Border implements ICommand {
-
     public void execute(Player sender, String[] args) {
         if (Main.getInstance().getGame().getStatus() != Status.STANDBY) {
             sender.sendMessage(Config.errorPrefix + Localization.message("GAME_INPROGRESS"));

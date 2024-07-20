@@ -16,12 +16,10 @@ import java.util.Set;
 import java.util.UUID;
 
 public class MovementHandler implements Listener {
-
     private final Set<UUID> prevPlayersOnGround = Sets.newHashSet();
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onMove(PlayerMoveEvent event) {
-
         if (event.getTo() == null || event.getTo().getWorld() == null) return;
         checkJumping(event);
         checkBounds(event);

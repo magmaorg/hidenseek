@@ -16,13 +16,11 @@ import java.util.function.Consumer;
  * @author bobby29831
  */
 public class LocationUtils {
-
     public static void setLocation(
             @NotNull Player player,
             @NotNull Locations place,
             String mapName,
             @NotNull Consumer<Map> consumer) {
-
         if (Main.getInstance().getGame().getStatus() != Status.STANDBY) {
             player.sendMessage(Config.errorPrefix + Localization.message("GAME_INPROGRESS"));
             return;

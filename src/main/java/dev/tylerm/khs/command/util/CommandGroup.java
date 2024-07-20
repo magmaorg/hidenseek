@@ -14,7 +14,6 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class CommandGroup {
-
     private final Map<String, Object> commandRegister;
     private final String label;
 
@@ -45,7 +44,6 @@ public class CommandGroup {
     }
 
     public void handleCommand(Player player, String[] args) {
-
         Tuple<ICommand, String, String[]> data = getCommand(args, this.getLabel());
 
         if (data == null) {

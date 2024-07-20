@@ -16,7 +16,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class Help implements ICommand {
-
     public void execute(Player sender, String[] args) {
         final int pageSize = 4;
         List<Pair<String, ICommand>> commands = Main.getInstance().getCommandGroup().getCommands();

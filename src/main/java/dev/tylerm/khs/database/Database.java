@@ -18,14 +18,12 @@ import java.sql.SQLException;
 import java.util.UUID;
 
 public class Database {
-
     private final GameDataTable playerInfo;
     private final NameDataTable nameInfo;
     private final InventoryTable inventoryInfo;
     private final DatabaseConnection connection;
 
     public Database() {
-
         if (Config.databaseType.equalsIgnoreCase("SQLITE")) {
             Main.getInstance().getLogger().info("SQLITE database chosen");
             connection = new SQLiteConnection();

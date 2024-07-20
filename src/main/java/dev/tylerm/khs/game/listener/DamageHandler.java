@@ -19,10 +19,8 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.entity.PlayerDeathEvent;
 
 public class DamageHandler implements Listener {
-
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onEntityDamage(EntityDamageEvent event) {
         Board board = Main.getInstance().getBoard();
@@ -81,9 +79,7 @@ public class DamageHandler implements Listener {
         // Spectators and cannot take damage
         if (board.isSpectator(player)) {
             event.setCancelled(true);
-            if (Main.getInstance().supports(18) && player.getLocation().getBlockY() < -64) {
-                game.getCurrentMap().getGameSpawn().teleport(player);
-            } else if (!Main.getInstance().supports(18) && player.getLocation().getY() < 0) {
+            if (player.getLocation().getBlockY() < -64) {
                 game.getCurrentMap().getGameSpawn().teleport(player);
             }
             return;
@@ -98,13 +94,7 @@ public class DamageHandler implements Listener {
         // Handle death event
         event.setCancelled(true);
         // Play death effect
-        if (Main.getInstance().supports(9)) {
-            XSound.ENTITY_PLAYER_DEATH.play(player, 1, 1);
-        } else {
-            XSound.ENTITY_PLAYER_HURT.play(player, 1, 1);
-        }
-        // Reveal player if they are disguised
-        Main.getInstance().getDisguiser().reveal(player);
+        XSound.ENTITY_PLAYER_DEATH.play(player, 1, 1);
         // Teleport player to seeker spawn
         if (delayedRespawn && !respawnAsSpectator) {
             game.getCurrentMap().getGameSeekerLobby().teleport(player);
@@ -148,10 +138,5 @@ public class DamageHandler implements Listener {
             }
         }
         board.reloadBoardTeams();
-    }
-
-    @EventHandler(priority = EventPriority.MONITOR)
-    public void onPlayerDeath(PlayerDeathEvent event) {
-        Main.getInstance().getDisguiser().reveal(event.getEntity());
     }
 }

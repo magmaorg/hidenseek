@@ -16,7 +16,6 @@ import java.util.Collections;
 import java.util.List;
 
 public class Create implements ICommand {
-
     public void execute(Player sender, String[] args) {
         List<String> worlds = Main.getInstance().getWorlds();
         if (worlds.contains(args[0])) {

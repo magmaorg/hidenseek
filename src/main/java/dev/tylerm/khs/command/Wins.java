@@ -15,7 +15,6 @@ import java.util.List;
 import java.util.UUID;
 
 public class Wins implements ICommand {
-
     public void execute(Player sender, String[] args) {
         Main.getInstance()
                 .getServer()

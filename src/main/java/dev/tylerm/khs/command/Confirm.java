@@ -12,7 +12,6 @@ import java.util.*;
 import java.util.function.Consumer;
 
 public class Confirm implements ICommand {
-
     public static final Map<UUID, Confirmation> confirmations = new HashMap<>();
 
     public void execute(Player sender, String[] args) {

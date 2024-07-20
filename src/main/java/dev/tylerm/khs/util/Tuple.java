@@ -1,7 +1,6 @@
 package dev.tylerm.khs.util;
 
 public class Tuple<L, C, R> {
-
     private final L left;
     private final C center;
     private final R right;

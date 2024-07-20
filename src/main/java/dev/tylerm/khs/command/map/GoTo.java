@@ -14,7 +14,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class GoTo implements ICommand {
-
     public void execute(Player sender, String[] args) {
         Map map = Maps.getMap(args[0]);
         if (map == null) {

@@ -16,7 +16,6 @@ import java.io.File;
 import java.util.List;
 
 public class Delete implements ICommand {
-
     public void execute(Player sender, String[] args) {
         java.util.List<String> worlds = Main.getInstance().getWorlds();
         if (!worlds.contains(args[0])) {

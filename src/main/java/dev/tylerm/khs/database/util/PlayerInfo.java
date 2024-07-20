@@ -22,7 +22,6 @@ package dev.tylerm.khs.database.util;
 import java.util.UUID;
 
 public class PlayerInfo {
-
     private final UUID uniqueId;
     private final int hiderWins;
     private final int seekerWins;

@@ -13,7 +13,6 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 public class Leave implements ICommand {
-
     public void execute(Player sender, String[] args) {
         if (Main.getInstance().getGame().checkCurrentMap()) {
             sender.sendMessage(errorPrefix + message("GAME_SETUP"));

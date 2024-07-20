@@ -11,7 +11,6 @@ import dev.tylerm.khs.util.packet.EntityMetadataPacket;
 import org.bukkit.entity.Player;
 
 public class Glow {
-
     private static final ProtocolManager protocolManager = ProtocolLibrary.getProtocolManager();
 
     private int glowTime;
@@ -62,7 +61,6 @@ public class Glow {
     }
 
     public void setGlow(Player player, Player target, boolean glowing) {
-
         EntityMetadataPacket packet = new EntityMetadataPacket();
         packet.setEntity(target);
         packet.setGlow(glowing);

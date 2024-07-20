@@ -1,11 +1,8 @@
 package dev.tylerm.khs.configuration;
 
-import com.cryptomorin.xseries.XMaterial;
-
 import dev.tylerm.khs.Main;
 import dev.tylerm.khs.util.Location;
 
-import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.jetbrains.annotations.NotNull;
@@ -15,7 +12,6 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class Maps {
-
     private static final HashMap<String, Map> MAPS = new HashMap<>();
 
     @Nullable
@@ -58,7 +54,6 @@ public class Maps {
     }
 
     public static void loadMaps() {
-
         ConfigManager manager = ConfigManager.create("maps.yml");
 
         ConfigurationSection maps = manager.getConfigurationSection("maps");
@@ -88,16 +83,6 @@ public class Maps {
                 data.getInt("worldborder.size"),
                 data.getInt("worldborder.delay"),
                 data.getInt("worldborder.change"));
-        List<String> blockhunt = data.getStringList("blockhunt.blocks");
-        if (blockhunt == null) blockhunt = new ArrayList<>();
-        map.setBlockhunt(
-                data.getBoolean("blockhunt.enabled"),
-                blockhunt.stream()
-                        .map(XMaterial::matchXMaterial)
-                        .filter(Optional::isPresent)
-                        .map(e -> e.get().parseMaterial())
-                        .filter(Objects::nonNull)
-                        .collect(Collectors.toList()));
         return map;
     }
 
@@ -110,7 +95,6 @@ public class Maps {
     }
 
     private static void saveMaps() {
-
         ConfigManager manager = ConfigManager.create("maps.yml");
         ConfigurationSection maps = new YamlConfiguration();
 
@@ -128,10 +112,6 @@ public class Maps {
             data.set("worldborder.pos.size", map.getWorldBorderData().getX());
             data.set("worldborder.pos.delay", map.getWorldBorderData().getY());
             data.set("worldborder.pos.change", map.getWorldBorderData().getZ());
-            data.set("blockhunt.enabled", map.isBlockHuntEnabled());
-            data.set(
-                    "blockhunt.blocks",
-                    map.getBlockHunt().stream().map(Material::name).collect(Collectors.toList()));
             maps.set(map.getName(), data);
         }
 

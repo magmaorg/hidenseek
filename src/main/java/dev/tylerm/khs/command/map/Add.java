@@ -15,7 +15,6 @@ import java.util.Collections;
 import java.util.List;
 
 public class Add implements ICommand {
-
     public void execute(Player sender, String[] args) {
         if (Main.getInstance().getGame().getStatus() != Status.STANDBY) {
             sender.sendMessage(Config.errorPrefix + Localization.message("GAME_INPROGRESS"));

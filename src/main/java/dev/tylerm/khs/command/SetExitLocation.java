@@ -12,7 +12,6 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 public class SetExitLocation implements ICommand {
-
     public void execute(Player sender, String[] args) {
         LocationUtils.setLocation(
                 sender,

@@ -1,7 +1,6 @@
 package dev.tylerm.khs.util;
 
 public class Pair<L, R> {
-
     private final L left;
     private final R right;
 

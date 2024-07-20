@@ -31,12 +31,10 @@ import java.sql.*;
 import java.util.*;
 
 public class GameDataTable {
-
     private final Map<UUID, PlayerInfo> CACHE = new HashMap<>();
     private final Database database;
 
     protected GameDataTable(Database database) {
-
         String sql =
                 "CREATE TABLE IF NOT EXISTS hs_data (\n"
                         + "	uuid BINARY(16) PRIMARY KEY,\n"

@@ -7,7 +7,6 @@ import dev.tylerm.khs.Main;
 import dev.tylerm.khs.configuration.Map;
 
 public class Border {
-
     private int delay;
     private boolean running;
     private final Map map;

@@ -7,7 +7,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Localization {
-
     public static final Map<String, LocalizationString> LOCAL = new HashMap<>();
     public static final Map<String, LocalizationString> DEFAULT_LOCAL = new HashMap<>();
 
@@ -50,7 +49,6 @@ public class Localization {
             };
 
     public static void loadLocalization() {
-
         ConfigManager manager =
                 ConfigManager.create(
                         "localization.yml", "lang/localization_" + Config.locale + ".yml");

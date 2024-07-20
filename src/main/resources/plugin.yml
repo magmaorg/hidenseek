@@ -56,12 +56,6 @@ permissions:
     default: op
   hs.map.set.bounds:
     default: op
-  hs.map.blockhunt.add:
-    default: op
-  hs.map.blockhunt.remove:
-    default: op
-  hs.map.blockhunt.list:
-    default: op
   hs.world.create:
     default: op
   hs.world.delete:

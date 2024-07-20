@@ -19,7 +19,6 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class Board {
-
     private enum Type {
         HIDER,
         SEEKER,
@@ -397,7 +396,6 @@ public class Board {
 
 @SuppressWarnings("deprecation")
 class CustomBoard {
-
     private final Scoreboard board;
     private final Objective obj;
     private final Player player;
@@ -411,16 +409,9 @@ class CustomBoard {
         this.board = manager.getNewScoreboard();
         this.LINES = new HashMap<>();
         this.player = player;
-        if (Main.getInstance().supports(13)) {
-            this.obj =
-                    board.registerNewObjective(
-                            "Scoreboard",
-                            "dummy",
-                            ChatColor.translateAlternateColorCodes('&', title));
-        } else {
-            this.obj = board.registerNewObjective("Scoreboard", "dummy");
-            this.obj.setDisplayName(ChatColor.translateAlternateColorCodes('&', title));
-        }
+        this.obj =
+                board.registerNewObjective(
+                        "Scoreboard", "dummy", ChatColor.translateAlternateColorCodes('&', title));
         this.blanks = 0;
         this.displayed = false;
         this.updateTeams();
@@ -445,27 +436,16 @@ class CustomBoard {
         for (String entry : seekerTeam.getEntries()) seekerTeam.removeEntry(entry);
         for (Player player : Main.getInstance().getBoard().getSeekers())
             seekerTeam.addEntry(player.getName());
-        if (Main.getInstance().supports(9)) {
-            if (nameTagsVisible) {
-                hiderTeam.setOption(
-                        Team.Option.NAME_TAG_VISIBILITY, Team.OptionStatus.FOR_OWN_TEAM);
-                seekerTeam.setOption(
-                        Team.Option.NAME_TAG_VISIBILITY, Team.OptionStatus.FOR_OTHER_TEAMS);
-            } else {
-                hiderTeam.setOption(Team.Option.NAME_TAG_VISIBILITY, Team.OptionStatus.NEVER);
-                seekerTeam.setOption(Team.Option.NAME_TAG_VISIBILITY, Team.OptionStatus.NEVER);
-            }
-            hiderTeam.setOption(Team.Option.COLLISION_RULE, Team.OptionStatus.NEVER);
-            seekerTeam.setOption(Team.Option.COLLISION_RULE, Team.OptionStatus.NEVER);
+        if (nameTagsVisible) {
+            hiderTeam.setOption(Team.Option.NAME_TAG_VISIBILITY, Team.OptionStatus.FOR_OWN_TEAM);
+            seekerTeam.setOption(
+                    Team.Option.NAME_TAG_VISIBILITY, Team.OptionStatus.FOR_OTHER_TEAMS);
         } else {
-            if (nameTagsVisible) {
-                hiderTeam.setNameTagVisibility(NameTagVisibility.HIDE_FOR_OTHER_TEAMS);
-                seekerTeam.setNameTagVisibility(NameTagVisibility.HIDE_FOR_OWN_TEAM);
-            } else {
-                hiderTeam.setNameTagVisibility(NameTagVisibility.NEVER);
-                seekerTeam.setNameTagVisibility(NameTagVisibility.NEVER);
-            }
+            hiderTeam.setOption(Team.Option.NAME_TAG_VISIBILITY, Team.OptionStatus.NEVER);
+            seekerTeam.setOption(Team.Option.NAME_TAG_VISIBILITY, Team.OptionStatus.NEVER);
         }
+        hiderTeam.setOption(Team.Option.COLLISION_RULE, Team.OptionStatus.NEVER);
+        seekerTeam.setOption(Team.Option.COLLISION_RULE, Team.OptionStatus.NEVER);
         hiderTeam.setPrefix(message("HIDER_TEAM_NAME").toString() + " " + ChatColor.RESET);
         seekerTeam.setPrefix(message("SEEKER_TEAM_NAME").toString() + " " + ChatColor.RESET);
     }
@@ -508,7 +488,6 @@ class CustomBoard {
 }
 
 class Line {
-
     private final int score;
     private String message;
 

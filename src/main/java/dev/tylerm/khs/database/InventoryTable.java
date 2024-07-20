@@ -16,11 +16,9 @@ import java.sql.*;
 import java.util.UUID;
 
 public class InventoryTable {
-
     private final Database database;
 
     protected InventoryTable(Database database) {
-
         String sql =
                 "CREATE TABLE IF NOT EXISTS hs_inventory (\n"
                         + "	uuid BINARY(16) NOT NULL,\n"

@@ -2,8 +2,6 @@ package dev.tylerm.khs.configuration;
 
 import com.cryptomorin.xseries.XItemStack;
 
-import dev.tylerm.khs.Main;
-
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
@@ -16,7 +14,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Items {
-
     public static List<ItemStack> HIDER_ITEMS, SEEKER_ITEMS;
     public static ItemStack HIDER_HELM,
             SEEKER_HELM,
@@ -29,7 +26,6 @@ public class Items {
     public static List<PotionEffect> HIDER_EFFECTS, SEEKER_EFFECTS;
 
     public static void loadItems() {
-
         ConfigManager manager = ConfigManager.create("items.yml");
 
         SEEKER_ITEMS = new ArrayList<>();
@@ -160,24 +156,12 @@ public class Items {
         ConfigurationSection config = new YamlConfiguration().createSection("temp");
         String material = item.getString("material").toUpperCase();
         boolean splash = false;
-        if (!Main.getInstance().supports(9)) {
-            if (material.contains("POTION")) {
-                config.set("level", 1);
-            }
-            if (material.equalsIgnoreCase("SPLASH_POTION")
-                    || material.equalsIgnoreCase("LINGERING_POTION")) {
-                material = "POTION";
-                splash = true;
-            }
-        }
         config.set("name", item.getString("name"));
         config.set("material", material);
         config.set("enchants", item.getConfigurationSection("enchantments"));
         config.set("unbreakable", item.getBoolean("unbreakable"));
-        if (Main.getInstance().supports(14)) {
-            if (item.contains("model-data")) {
-                config.set("model-data", item.getInt("model-data"));
-            }
+        if (item.contains("model-data")) {
+            config.set("model-data", item.getInt("model-data"));
         }
         if (item.isSet("lore")) config.set("lore", item.getStringList("lore"));
         if (material.equalsIgnoreCase("POTION")

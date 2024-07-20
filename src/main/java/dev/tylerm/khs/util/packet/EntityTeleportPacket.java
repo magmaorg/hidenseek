@@ -6,7 +6,6 @@ import org.bukkit.entity.Entity;
 import org.jetbrains.annotations.NotNull;
 
 public class EntityTeleportPacket extends AbstractPacket {
-
     public EntityTeleportPacket() {
         super(PacketType.Play.Server.ENTITY_TELEPORT);
     }

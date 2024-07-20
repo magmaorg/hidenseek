@@ -4,7 +4,6 @@ import com.cryptomorin.xseries.XItemStack;
 import com.cryptomorin.xseries.XMaterial;
 import com.cryptomorin.xseries.XSound;
 
-import dev.tylerm.khs.Main;
 import dev.tylerm.khs.game.util.CountdownDisplay;
 import dev.tylerm.khs.util.Location;
 
@@ -20,7 +19,6 @@ import java.util.List;
 import java.util.Optional;
 
 public class Config {
-
     private static ConfigManager config;
 
     public static String messagePrefix,
@@ -101,7 +99,6 @@ public class Config {
     public static Location exitPosition;
 
     public static void loadConfig() {
-
         config = ConfigManager.create("config.yml");
         config.saveConfig();
 
@@ -135,11 +132,10 @@ public class Config {
         tauntLast = config.getBoolean("taunt.whenLastPerson");
 
         // Glow
-        alwaysGlow = config.getBoolean("alwaysGlow") && Main.getInstance().supports(9);
+        alwaysGlow = config.getBoolean("alwaysGlow");
         glowLength = Math.max(1, config.getInt("glow.time"));
         glowStackable = config.getBoolean("glow.stackable");
-        glowEnabled =
-                config.getBoolean("glow.enabled") && Main.getInstance().supports(9) && !alwaysGlow;
+        glowEnabled = config.getBoolean("glow.enabled") && !alwaysGlow;
         if (glowEnabled) {
             glowPowerupItem = createItemStack("glow");
         }
@@ -270,10 +266,8 @@ public class Config {
                 "name",
                 ChatColor.translateAlternateColorCodes('&', config.getString(path + ".name")));
         item.set("material", config.getString(path + ".material"));
-        if (Main.getInstance().supports(14)) {
-            if (config.contains(path + ".model-data") && config.getInt(path + ".model-data") != 0) {
-                item.set("model-data", config.getInt(path + ".model-data"));
-            }
+        if (config.contains(path + ".model-data") && config.getInt(path + ".model-data") != 0) {
+            item.set("model-data", config.getInt(path + ".model-data"));
         }
         List<String> lore = config.getStringList(path + ".lore");
         if (lore != null && !lore.isEmpty()) item.set("lore", lore);

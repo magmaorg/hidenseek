@@ -36,14 +36,11 @@ import org.bukkit.GameMode;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 @SuppressWarnings("deprecation")
 public class PlayerLoader {
-
     public static void loadHider(Player player, Map map) {
         map.getGameSpawn().teleport(player);
         loadPlayer(player);
@@ -55,9 +52,6 @@ public class PlayerLoader {
                 20,
                 ChatColor.WHITE + "" + message("HIDER_TEAM_NAME"),
                 ChatColor.WHITE + message("HIDERS_SUBTITLE").toString());
-        if (map.isBlockHuntEnabled()) {
-            openBlockHuntPicker(player, map);
-        }
     }
 
     public static void loadSeeker(Player player, Map map) {
@@ -145,18 +139,13 @@ public class PlayerLoader {
     public static void unloadPlayer(Player player) {
         player.setGameMode(GameMode.ADVENTURE);
         player.getInventory().clear();
-        Main.getInstance().getDisguiser().reveal(player);
         for (PotionEffect effect : player.getActivePotionEffects()) {
             player.removePotionEffect(effect.getType());
         }
-        if (Main.getInstance().supports(9)) {
-            AttributeInstance attribute = player.getAttribute(Attribute.GENERIC_MAX_HEALTH);
-            if (attribute != null) player.setHealth(attribute.getValue());
-            for (Player temp : Main.getInstance().getBoard().getPlayers()) {
-                Main.getInstance().getGame().getGlow().setGlow(player, temp, false);
-            }
-        } else {
-            player.setHealth(player.getMaxHealth());
+        AttributeInstance attribute = player.getAttribute(Attribute.GENERIC_MAX_HEALTH);
+        if (attribute != null) player.setHealth(attribute.getValue());
+        for (Player temp : Main.getInstance().getBoard().getPlayers()) {
+            Main.getInstance().getGame().getGlow().setGlow(player, temp, false);
         }
         Main.getInstance()
                 .getBoard()
@@ -186,29 +175,8 @@ public class PlayerLoader {
         player.setAllowFlight(false);
         player.setGameMode(GameMode.ADVENTURE);
         player.getInventory().clear();
-        for (PotionEffect effect : player.getActivePotionEffects()) {
-            if (effect.getType().getName().equals("INVISIBILITY")
-                    && Main.getInstance().getDisguiser().disguised(player)) continue;
-            player.removePotionEffect(effect.getType());
-        }
         player.setFoodLevel(20);
-        if (Main.getInstance().supports(9)) {
-            AttributeInstance attribute = player.getAttribute(Attribute.GENERIC_MAX_HEALTH);
-            if (attribute != null) player.setHealth(attribute.getValue());
-        } else {
-            player.setHealth(player.getMaxHealth());
-        }
-    }
-
-    public static void openBlockHuntPicker(Player player, Map map) {
-        int slots = ((map.getBlockHunt().size() - 1) / 9) * 9 + 9;
-        Inventory inventory =
-                Main.getInstance()
-                        .getServer()
-                        .createInventory(null, slots, "Select a Block: " + map.getName());
-        for (int i = 0; i < map.getBlockHunt().size(); i++) {
-            inventory.setItem(i, new ItemStack(map.getBlockHunt().get(i)));
-        }
-        player.openInventory(inventory);
+        AttributeInstance attribute = player.getAttribute(Attribute.GENERIC_MAX_HEALTH);
+        if (attribute != null) player.setHealth(attribute.getValue());
     }
 }

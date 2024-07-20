@@ -30,11 +30,9 @@ import java.sql.*;
 import java.util.UUID;
 
 public class NameDataTable {
-
     private final Database database;
 
     protected NameDataTable(Database database) {
-
         String sql =
                 "CREATE TABLE IF NOT EXISTS hs_names (\n"
                         + "	uuid BINARY(16) NOT NULL,\n"

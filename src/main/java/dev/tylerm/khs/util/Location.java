@@ -15,7 +15,6 @@ import org.jetbrains.annotations.NotNull;
 import java.io.File;
 
 public class Location {
-
     private final String world;
     private final double x;
     private final double y;

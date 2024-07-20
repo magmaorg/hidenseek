@@ -8,7 +8,6 @@ import com.comphenix.protocol.events.PacketContainer;
 import org.bukkit.entity.Player;
 
 public class AbstractPacket {
-
     private static final ProtocolManager protocolManager;
 
     static {

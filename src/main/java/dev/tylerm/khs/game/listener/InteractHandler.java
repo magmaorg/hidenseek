@@ -28,7 +28,6 @@ import java.util.List;
 
 @SuppressWarnings("deprecation")
 public class InteractHandler implements Listener {
-
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerInteract(PlayerInteractEvent event) {
         if (!Main.getInstance().getBoard().contains(event.getPlayer())) return;
@@ -122,7 +121,6 @@ public class InteractHandler implements Listener {
     }
 
     public static void createSpectatorTeleportPage(Player player, int page) {
-
         if (page < 0) {
             return;
         }

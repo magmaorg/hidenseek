@@ -29,11 +29,9 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 public class MySQLConnection implements DatabaseConnection {
-
     private final HikariDataSource ds;
 
     public MySQLConnection() {
-
         HikariConfig config = new HikariConfig();
 
         Main.getInstance().getLogger().info("Database host: " + Config.databaseHost);

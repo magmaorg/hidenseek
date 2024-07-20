@@ -9,7 +9,6 @@ import org.bukkit.Material;
 import org.jetbrains.annotations.NotNull;
 
 public class BlockChangePacket extends AbstractPacket {
-
     public BlockChangePacket() {
         super(PacketType.Play.Server.BLOCK_CHANGE);
     }

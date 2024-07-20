@@ -18,7 +18,6 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.inventory.ItemStack;
 
 public class PlayerHandler implements Listener {
-
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onFoodLevelChange(FoodLevelChangeEvent event) {
         if (event.getEntity() instanceof Player) {

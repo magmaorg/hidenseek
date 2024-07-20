@@ -25,7 +25,6 @@ import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 public class Debug implements ICommand {
-
     private static final Map<Player, Map<Integer, Consumer<Player>>> debugMenuFunctions =
             new HashMap<>();
 
@@ -124,28 +123,6 @@ public class Debug implements ICommand {
                                 player.setHealth(0.1);
                             }
                         }));
-        if (map.isBlockHuntEnabled()) {
-            debugMenu.setItem(
-                    7,
-                    createOption(
-                            functions,
-                            7,
-                            XMaterial.GLASS.parseMaterial(),
-                            "&dEnable Disguise",
-                            1,
-                            player -> {
-                                PlayerLoader.openBlockHuntPicker(player, map);
-                            }));
-            debugMenu.setItem(
-                    8,
-                    createOption(
-                            functions,
-                            8,
-                            XMaterial.PLAYER_HEAD.parseMaterial(),
-                            "&dDisable Disguise",
-                            1,
-                            player -> Main.getInstance().getDisguiser().reveal(player)));
-        }
         debugMenuFunctions.put(sender, functions);
         return debugMenu;
     }

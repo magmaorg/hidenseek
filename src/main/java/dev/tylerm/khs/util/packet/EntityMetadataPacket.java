@@ -5,8 +5,6 @@ import com.comphenix.protocol.wrappers.WrappedDataValue;
 import com.comphenix.protocol.wrappers.WrappedDataWatcher;
 import com.comphenix.protocol.wrappers.WrappedWatchableObject;
 
-import dev.tylerm.khs.Main;
-
 import org.bukkit.entity.Entity;
 import org.jetbrains.annotations.NotNull;
 
@@ -14,7 +12,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class EntityMetadataPacket extends AbstractPacket {
-
     private final WrappedDataWatcher watcher;
     private final WrappedDataWatcher.Serializer serializer;
 
@@ -38,28 +35,20 @@ public class EntityMetadataPacket extends AbstractPacket {
     }
 
     public void writeMetadata() {
+        final List<WrappedDataValue> wrappedDataValueList = new ArrayList<>();
 
-        if (Main.getInstance().supports(19, 3)) {
+        for (final WrappedWatchableObject entry : watcher.getWatchableObjects()) {
+            if (entry == null) continue;
 
-            final List<WrappedDataValue> wrappedDataValueList = new ArrayList<>();
-
-            for (final WrappedWatchableObject entry : watcher.getWatchableObjects()) {
-                if (entry == null) continue;
-
-                final WrappedDataWatcher.WrappedDataWatcherObject watcherObject =
-                        entry.getWatcherObject();
-                wrappedDataValueList.add(
-                        new WrappedDataValue(
-                                watcherObject.getIndex(),
-                                watcherObject.getSerializer(),
-                                entry.getRawValue()));
-            }
-
-            packet.getDataValueCollectionModifier().write(0, wrappedDataValueList);
-
-        } else {
-
-            packet.getWatchableCollectionModifier().write(0, watcher.getWatchableObjects());
+            final WrappedDataWatcher.WrappedDataWatcherObject watcherObject =
+                    entry.getWatcherObject();
+            wrappedDataValueList.add(
+                    new WrappedDataValue(
+                            watcherObject.getIndex(),
+                            watcherObject.getSerializer(),
+                            entry.getRawValue()));
         }
+
+        packet.getDataValueCollectionModifier().write(0, wrappedDataValueList);
     }
 }

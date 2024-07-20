@@ -12,7 +12,6 @@ import org.bukkit.event.entity.EntityBreakDoorEvent;
 import org.bukkit.event.hanging.HangingBreakByEntityEvent;
 
 public class WorldInteractHandler implements Listener {
-
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onBlockBreak(BlockBreakEvent event) {
         Player player = event.getPlayer();

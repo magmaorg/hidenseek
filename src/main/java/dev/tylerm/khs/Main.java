@@ -30,33 +30,22 @@ import org.jetbrains.annotations.NotNull;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class Main extends JavaPlugin implements Listener {
-
     private static Main instance;
-    private static int version;
-    private static int sub_version;
 
     private Database database;
     private Board board;
-    private Disguiser disguiser;
     private EntityHider entityHider;
     private Game game;
     private CommandGroup commandGroup;
     private boolean loaded;
 
     public void onEnable() {
-
         long start = System.currentTimeMillis();
 
         getLogger().info("Loading Kenshin's Hide and Seek");
         Main.instance = this;
-
-        getLogger().info("Getting minecraft version...");
-        this.updateVersion();
-        ;
 
         try {
             getLogger().info("Loading config.yml...");
@@ -79,8 +68,6 @@ public class Main extends JavaPlugin implements Listener {
         this.board = new Board();
         getLogger().info("Connecting to database...");
         this.database = new Database();
-        getLogger().info("Loading disguises...");
-        this.disguiser = new Disguiser();
         getLogger().info("Loading entity hider...");
         this.entityHider = new EntityHider(this, EntityHider.Policy.BLACKLIST);
         getLogger().info("Registering listeners...");
@@ -148,9 +135,6 @@ public class Main extends JavaPlugin implements Listener {
     }
 
     public void onDisable() {
-
-        version = 0;
-
         if (board != null) {
             board.getPlayers()
                     .forEach(
@@ -162,24 +146,18 @@ public class Main extends JavaPlugin implements Listener {
             board.cleanup();
         }
 
-        if (disguiser != null) {
-            disguiser.cleanUp();
-        }
-
         Bukkit.getServer().getMessenger().unregisterOutgoingPluginChannel(this);
     }
 
     private void onTick() {
         if (game.getStatus() == Status.ENDED) game = new Game(game.getCurrentMap(), board);
         game.onTick();
-        disguiser.check();
     }
 
     private void registerListeners() {
         getServer().getPluginManager().registerEvents(new BlockedCommandHandler(), this);
         getServer().getPluginManager().registerEvents(new ChatHandler(), this);
         getServer().getPluginManager().registerEvents(new DamageHandler(), this);
-        getServer().getPluginManager().registerEvents(new DisguiseHandler(), this);
         getServer().getPluginManager().registerEvents(new InteractHandler(), this);
         getServer().getPluginManager().registerEvents(new InventoryHandler(), this);
         getServer().getPluginManager().registerEvents(new JoinLeaveHandler(), this);
@@ -187,32 +165,6 @@ public class Main extends JavaPlugin implements Listener {
         getServer().getPluginManager().registerEvents(new PlayerHandler(), this);
         getServer().getPluginManager().registerEvents(new RespawnHandler(), this);
         getServer().getPluginManager().registerEvents(new WorldInteractHandler(), this);
-    }
-
-    private void updateVersion() {
-        Matcher matcher = Pattern.compile("MC: \\d\\.(\\d+).(\\d+)").matcher(Bukkit.getVersion());
-        if (matcher.find()) {
-            version = Integer.parseInt(matcher.group(1));
-            sub_version = Integer.parseInt(matcher.group(2));
-
-            getLogger().info("Identified server version: " + version);
-            getLogger().info("Identified server sub version: " + sub_version);
-
-            return;
-        }
-
-        matcher = Pattern.compile("MC: \\d\\.(\\d+)").matcher(Bukkit.getVersion());
-        if (matcher.find()) {
-            version = Integer.parseInt(matcher.group(1));
-            sub_version = 0;
-
-            getLogger().info("Identified server version: " + version);
-
-            return;
-        }
-
-        throw new IllegalArgumentException(
-                "Failed to parse server version from: " + Bukkit.getVersion());
     }
 
     public boolean onCommand(
@@ -260,24 +212,12 @@ public class Main extends JavaPlugin implements Listener {
         return game;
     }
 
-    public Disguiser getDisguiser() {
-        return disguiser;
-    }
-
     public EntityHider getEntityHider() {
         return entityHider;
     }
 
     public CommandGroup getCommandGroup() {
         return commandGroup;
-    }
-
-    public boolean supports(int v) {
-        return version >= v;
-    }
-
-    public boolean supports(int v, int s) {
-        return (version == v) ? sub_version >= s : version >= v;
     }
 
     public java.util.List<String> getWorlds() {

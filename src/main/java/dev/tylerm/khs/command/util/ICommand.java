@@ -6,7 +6,6 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 public interface ICommand {
-
     void execute(Player sender, String[] args);
 
     String getLabel();

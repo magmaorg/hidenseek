@@ -29,12 +29,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class LegacyTable {
-
     private final Database database;
     private final boolean exists;
 
     protected LegacyTable(Database database) {
-
         String sql = "SELECT * FROM player_info LIMIT 1;";
 
         boolean check;

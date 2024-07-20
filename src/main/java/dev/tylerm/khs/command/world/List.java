@@ -12,7 +12,6 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 public class List implements ICommand {
-
     public void execute(Player sender, String[] args) {
         java.util.List<String> worlds = Main.getInstance().getWorlds();
         if (worlds.isEmpty()) {

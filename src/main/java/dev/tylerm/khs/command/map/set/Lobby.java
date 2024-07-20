@@ -14,7 +14,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class Lobby implements ICommand {
-
     public void execute(Player sender, String[] args) {
         LocationUtils.setLocation(
                 sender,

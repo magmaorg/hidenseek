@@ -15,7 +15,6 @@ import java.util.Map;
 import java.util.UUID;
 
 public class RespawnHandler implements Listener {
-
     public static final Map<UUID, Location> temp_loc = new HashMap<>();
 
     @EventHandler(priority = EventPriority.HIGHEST)

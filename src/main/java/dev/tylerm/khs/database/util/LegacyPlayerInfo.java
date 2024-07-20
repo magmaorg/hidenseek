@@ -20,7 +20,6 @@
 package dev.tylerm.khs.database.util;
 
 public class LegacyPlayerInfo {
-
     private final byte[] uniqueId;
     private final int hiderWins;
     private final int seekerWins;

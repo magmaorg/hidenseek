@@ -46,7 +46,6 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class Game {
-
     private final Taunt taunt;
     private final Glow glow;
 
@@ -63,7 +62,6 @@ public class Game {
     private boolean hiderLeft;
 
     public Game(Map map, Board board) {
-
         this.currentMap = map;
 
         this.taunt = new Taunt();

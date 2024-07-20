@@ -15,7 +15,6 @@ import java.util.Collections;
 import java.util.List;
 
 public class Top implements ICommand {
-
     public void execute(Player sender, String[] args) {
         int page;
         if (args.length == 0) page = 1;

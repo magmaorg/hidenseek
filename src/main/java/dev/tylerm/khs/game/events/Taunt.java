@@ -19,7 +19,6 @@ import java.util.Random;
 import java.util.UUID;
 
 public class Taunt {
-
     private UUID tauntPlayer;
     private int delay;
     private boolean running;

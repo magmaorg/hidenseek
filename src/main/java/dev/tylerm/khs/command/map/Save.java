@@ -17,7 +17,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class Save implements ICommand {
-
     public static boolean runningBackup = false;
 
     public void execute(Player sender, String[] args) {

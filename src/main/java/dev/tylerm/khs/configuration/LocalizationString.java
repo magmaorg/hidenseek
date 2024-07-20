@@ -3,7 +3,6 @@ package dev.tylerm.khs.configuration;
 import org.bukkit.entity.Entity;
 
 public class LocalizationString {
-
     String message;
 
     public LocalizationString(String message) {

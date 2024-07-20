@@ -29,12 +29,10 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class SQLiteConnection implements DatabaseConnection {
-
     private final File databaseFile;
     private final SQLiteConfig config;
 
     public SQLiteConnection() {
-
         try {
             Class.forName("org.sqlite.JDBC");
         } catch (ClassNotFoundException e) {

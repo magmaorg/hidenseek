@@ -19,7 +19,6 @@ import java.util.Optional;
 import java.util.UUID;
 
 public class PAPIExpansion extends PlaceholderExpansion {
-
     @Override
     public @NotNull String getIdentifier() {
         return "hs";
