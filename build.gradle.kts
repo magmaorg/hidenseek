@@ -28,7 +28,7 @@ dependencies {
 
     implementation("org.jetbrains:annotations:24.1.0")
     implementation("org.mariadb.jdbc:mariadb-java-client:3.1.4")
-    implementation("com.zaxxer:HikariCP:4.0.3")
+    implementation("com.zaxxer:HikariCP:5.1.0")
     implementation("org.xerial:sqlite-jdbc:3.46.0.0")
     implementation("com.github.cryptomorin:XSeries:11.2.0.1") {
         isTransitive = false
