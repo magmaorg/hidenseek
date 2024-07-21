@@ -49,9 +49,16 @@ tasks {
         relocate("com.zaxxer.hikari", "dev.tylerm.depend.hikari")
 
         exclude("META-INF/maven/**")
+        exclude("org/sqlite/native/Windows/**")
         exclude("org/sqlite/native/Mac/**")
         exclude("org/sqlite/native/Linux-Android/**")
         exclude("org/sqlite/native/Linux/ppc64/**")
         exclude("org/sqlite/native/Linux/armv7/**")
+        exclude("org/sqlite/native/Linux/aarch64/**")
+        exclude("org/sqlite/native/Linux/arm/**")
+        exclude("org/sqlite/native/Linux/armv6/**")
+        exclude("org/sqlite/native/Linux/x86/**")
+        exclude("org/sqlite/native/Linux-Musl/**")
+        exclude("org/sqlite/native/FreeBSD/**")
     }
 }
