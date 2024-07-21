@@ -296,6 +296,7 @@ seekerPing:
 
 # Changes the default plugin language. Currently, Supported localizations are:
 # en-US (English - United States)
+# ru-RU (Russian)
 locale: "en-US"
 
 # Stop commands being run by any user while playing the game.
