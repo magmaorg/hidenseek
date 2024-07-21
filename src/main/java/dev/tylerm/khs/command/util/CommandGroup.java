@@ -1,5 +1,6 @@
 package dev.tylerm.khs.command.util;
 
+import dev.tylerm.khs.Main;
 import dev.tylerm.khs.command.map.Save;
 import dev.tylerm.khs.configuration.Config;
 import dev.tylerm.khs.configuration.Localization;
@@ -49,11 +50,12 @@ public class CommandGroup {
         if (data == null) {
             player.sendMessage(
                     String.format(
-                                    "%s%sKenshin's Hide and Seek %s(%s1.7.6%s)\n",
+                                    "%s%sKenshin's Hide and Seek %s(%s%s%s)\n",
                                     ChatColor.AQUA,
                                     ChatColor.BOLD,
                                     ChatColor.GRAY,
                                     ChatColor.WHITE,
+                                    Main.getPlugin(Main.class).getDescription().getVersion(),
                                     ChatColor.GRAY)
                             + String.format(
                                     "%sAuthor: %s[KenshinEto]\n", ChatColor.GRAY, ChatColor.WHITE)

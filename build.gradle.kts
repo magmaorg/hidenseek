@@ -4,7 +4,7 @@ plugins {
 }
 
 group = "dev.tylerm"
-version = "1.7.6"
+version = "1.7.7"
 
 java {
     sourceCompatibility = JavaVersion.toVersion(11)
@@ -36,6 +36,12 @@ dependencies {
 }
 
 tasks {
+    processResources {
+        filesMatching("plugin.yml") {
+            expand("version" to version)
+        }
+    }
+
     shadowJar {
         archiveClassifier.set("")
 

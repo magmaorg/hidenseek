@@ -1,6 +1,6 @@
 name: KenshinsHideAndSeek
 main: dev.tylerm.khs.Main
-version: 1.7.6
+version: ${version}
 author: KenshinEto
 load: STARTUP
 api-version: 1.13
